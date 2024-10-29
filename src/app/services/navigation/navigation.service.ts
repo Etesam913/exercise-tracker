@@ -6,13 +6,14 @@ import { filter } from "rxjs";
   providedIn: "root",
 })
 export class NavigationService {
-  currentPath = "";
+  private currentPath = "";
 
   constructor(private router: Router) {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         this.currentPath = event.urlAfterRedirects;
+        console.log(event);
       });
   }
 

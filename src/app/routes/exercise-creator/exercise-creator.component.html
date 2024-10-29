@@ -1,1 +1,49 @@
-<p>exercise-creator works!</p>
+<form
+    class="flex flex-col gap-4 my-3"
+    [formGroup]="exerciseCreationForm"
+    (ngSubmit)="onSubmit()"
+>
+    <label class="flex flex-col gap-2" hlmLabel
+        >Exercise Type
+        <brn-select
+            class="inline-block"
+            placeholder="Add an Exercise Type"
+            formControlName="exerciseType"
+        >
+            <hlm-select-trigger class="w-56">
+                <hlm-select-value />
+            </hlm-select-trigger>
+            <hlm-select-content class="dark">
+                <hlm-option value="bench-press">Bench Press</hlm-option>
+                <hlm-option value="lunge">Lunge</hlm-option>
+                <hlm-option value="bicep-curl">Bicep Curl</hlm-option>
+                <hlm-option value="lateral-raise">Lateral Raise</hlm-option>
+                <hlm-option value="pull up">Pull Up</hlm-option>
+            </hlm-select-content>
+        </brn-select>
+    </label>
+    <label class="flex flex-col gap-2" hlmLabel
+        >Repitition Count
+        <input
+            formControlName="repititionCount"
+            hlmInput
+            min="1"
+            max="20"
+            placeholder="Number of Repitition"
+            type="number"
+        />
+    </label>
+
+    <label class="flex flex-col gap-2" hlmLabel
+        >Set Count
+        <input
+            hlmInput
+            formControlName="setCount"
+            min="0"
+            max="20"
+            placeholder="Number of Sets"
+            type="number"
+        />
+    </label>
+    <button type="submit" hlmBtn>Create Exercise</button>
+</form>

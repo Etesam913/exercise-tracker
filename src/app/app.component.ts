@@ -1,7 +1,9 @@
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { HlmButtonDirective } from "@spartan-ng/ui-button-helm";
 import { SidebarComponent } from "./sidebar/sidebar.component";
 import { RouterOutlet } from "@angular/router";
+import { Title } from "@angular/platform-browser";
+import { ColorSchemeService } from "./services/color-scheme/color-scheme.service";
 
 @Component({
   selector: "app-root",
@@ -10,5 +12,6 @@ import { RouterOutlet } from "@angular/router";
   templateUrl: "./app.component.html",
 })
 export class AppComponent {
-  title = "exercise-tracker";
+  titleService = inject(Title);
+  colorSchemeService = inject(ColorSchemeService);
 }
