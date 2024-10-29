@@ -1,0 +1,19 @@
+<aside
+    class="bg-zinc-100 dark:bg-zinc-700 border-r-[1.5px] border-zinc-600 h-screen w-fit p-3 flex flex-col gap-4"
+>
+    <h1 class="font-bold text-xl">Exercise Tracker</h1>
+
+    <ul class="[&>*]:leading-9">
+        @for (route of sidebarRoutes; track route.path) {
+            <li>
+                <a
+                    routerLinkActive="underline"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                    class="underline-offset-4"
+                    [routerLink]="route.path"
+                    >{{ route.name }}</a
+                >
+            </li>
+        }
+    </ul>
+</aside>
