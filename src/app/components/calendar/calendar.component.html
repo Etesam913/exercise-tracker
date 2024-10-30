@@ -1,8 +1,14 @@
 <div class="flex flex-col gap-2 mt-3">
-  <h3 class="font-bold text-lg">
-    {{ this.calendarService.getMonthFullName() }}
-    {{ this.calendarService.getYear() }}
-  </h3>
+  <div class="w-full flex justify-between">
+    <h3 class="font-bold text-lg">
+      {{ this.calendarService.getMonthFullName() }}
+      {{ this.calendarService.getYear() }}
+    </h3>
+    <span class="flex gap-2 items-center">
+      <button hlmBtn (click)="calendarService.previousMonth()"><-</button>
+      <button hlmBtn (click)="calendarService.nextMonth()">-></button>
+    </span>
+  </div>
   <div class="grid grid-cols-7">
     <p>Sun</p>
     <p>Mon</p>
@@ -12,7 +18,7 @@
     <p>Fri</p>
     <p>Sat</p>
     @for (day of daysInMonthArr; track $index) {
-      <p>{{ day }}</p>
+      <app-calendar-day-square [dayNum]="day" />
     }
   </div>
 </div>

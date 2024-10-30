@@ -49,4 +49,26 @@ export class CalendarService {
   getNumberOfDaysInMonth(year: number, month: number) {
     return new Date(year, month + 1, 0).getDate();
   }
+
+  nextMonth() {
+    let { year, month } = this.calendarState();
+    if (month === 11) {
+      year += 1;
+      month = 0;
+    } else {
+      month += 1;
+    }
+    this.calendarState.set({ year, month, day: 1 });
+  }
+
+  previousMonth() {
+    let { year, month } = this.calendarState();
+    if (month === 0) {
+      year -= 1;
+      month = 11;
+    } else {
+      month -= 1;
+    }
+    this.calendarState.set({ year, month, day: 1 });
+  }
 }
