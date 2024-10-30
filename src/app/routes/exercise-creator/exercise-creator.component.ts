@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -10,6 +10,7 @@ import { HlmInputDirective } from "@spartan-ng/ui-input-helm";
 import { HlmLabelDirective } from "@spartan-ng/ui-label-helm";
 import { BrnSelectImports } from "@spartan-ng/ui-select-brain";
 import { HlmSelectImports } from "@spartan-ng/ui-select-helm";
+import { ExerciseService } from "../../services/exercise/exercise.service";
 
 @Component({
   selector: "app-exercise-creator",
@@ -25,14 +26,24 @@ import { HlmSelectImports } from "@spartan-ng/ui-select-helm";
   templateUrl: "./exercise-creator.component.html",
 })
 export class ExerciseCreatorComponent {
+  exerciseService = inject(ExerciseService);
   exerciseCreationForm = new FormGroup({
     exerciseType: new FormControl("", [Validators.required]),
-    repititionCount: new FormControl(1, [Validators.required]),
-    setCount: new FormControl(1, [Validators.required]),
+    repCount: new FormControl(1, [Validators.required, Validators.min(1)]),
+    setCount: new FormControl(1, [Validators.required, Validators.min(1)]),
   });
 
   onSubmit() {
     if (this.exerciseCreationForm.valid) {
+      const { exerciseType, repCount, setCount } =
+        this.exerciseCreationForm.value;
+      if (!exerciseType || !repCount || !setCount) return;
+
+      this.exerciseService.addExercise({
+        exerciseType,
+        repCount,
+        setCount,
+      });
       this.exerciseCreationForm.reset();
     }
   }

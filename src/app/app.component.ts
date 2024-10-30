@@ -1,9 +1,9 @@
 import { Component, inject } from "@angular/core";
 import { HlmButtonDirective } from "@spartan-ng/ui-button-helm";
-import { SidebarComponent } from "./sidebar/sidebar.component";
 import { RouterOutlet } from "@angular/router";
 import { Title } from "@angular/platform-browser";
 import { ColorSchemeService } from "./services/color-scheme/color-scheme.service";
+import { SidebarComponent } from "./components/sidebar/sidebar.component";
 
 @Component({
   selector: "app-root",

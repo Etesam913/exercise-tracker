@@ -1,12 +1,12 @@
 <form
-    class="flex flex-col gap-4 my-3"
+    class="flex flex-col gap-4 my-3 max-w-72"
     [formGroup]="exerciseCreationForm"
     (ngSubmit)="onSubmit()"
 >
     <label class="flex flex-col gap-2" hlmLabel
         >Exercise Type
         <brn-select
-            class="inline-block"
+            class="inline-block w-full"
             placeholder="Add an Exercise Type"
             formControlName="exerciseType"
         >
@@ -25,7 +25,7 @@
     <label class="flex flex-col gap-2" hlmLabel
         >Repitition Count
         <input
-            formControlName="repititionCount"
+            formControlName="repCount"
             hlmInput
             min="1"
             max="20"
