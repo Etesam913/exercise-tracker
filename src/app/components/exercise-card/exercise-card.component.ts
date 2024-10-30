@@ -6,6 +6,7 @@ import {
   HlmCardHeaderDirective,
   HlmCardTitleDirective,
 } from "@spartan-ng/ui-card-helm";
+import { ExerciseTypePipe } from "../../pipes/exercise-type/exercise-type.pipe";
 
 @Component({
   selector: "app-exercise-card",
@@ -15,6 +16,7 @@ import {
     HlmCardDirective,
     HlmCardHeaderDirective,
     HlmCardTitleDirective,
+    ExerciseTypePipe,
   ],
   templateUrl: "./exercise-card.component.html",
 })

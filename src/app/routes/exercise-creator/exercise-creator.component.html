@@ -18,9 +18,20 @@
                 <hlm-option value="lunge">Lunge</hlm-option>
                 <hlm-option value="bicep-curl">Bicep Curl</hlm-option>
                 <hlm-option value="lateral-raise">Lateral Raise</hlm-option>
-                <hlm-option value="pull up">Pull Up</hlm-option>
+                <hlm-option value="pull-up">Pull Up</hlm-option>
             </hlm-select-content>
         </brn-select>
+    </label>
+    <label class="flex flex-col gap-2" hlmLabel
+        >Weight (lbs)
+        <input
+            hlmInput
+            formControlName="weight"
+            min="5"
+            max="500"
+            placeholder="Weight(lbs)"
+            type="number"
+        />
     </label>
     <label class="flex flex-col gap-2" hlmLabel
         >Repitition Count

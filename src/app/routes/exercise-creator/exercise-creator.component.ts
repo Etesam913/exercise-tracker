@@ -31,18 +31,20 @@ export class ExerciseCreatorComponent {
     exerciseType: new FormControl("", [Validators.required]),
     repCount: new FormControl(1, [Validators.required, Validators.min(1)]),
     setCount: new FormControl(1, [Validators.required, Validators.min(1)]),
+    weight: new FormControl(30, [Validators.required, Validators.min(5)]),
   });
 
   onSubmit() {
     if (this.exerciseCreationForm.valid) {
-      const { exerciseType, repCount, setCount } =
+      const { exerciseType, repCount, setCount, weight } =
         this.exerciseCreationForm.value;
-      if (!exerciseType || !repCount || !setCount) return;
+      if (!exerciseType || !repCount || !setCount || !weight) return;
 
       this.exerciseService.addExercise({
         exerciseType,
         repCount,
         setCount,
+        weight,
       });
       this.exerciseCreationForm.reset();
     }
