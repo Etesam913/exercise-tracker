@@ -12,12 +12,12 @@ export type Exercise = {
 })
 export class ExerciseService {
   exercises = signal<Exercise[]>([
-    {
-      exerciseType: "test",
-      weight: 20,
-      setCount: 5,
-      repCount: 4,
-    },
+    // {
+    //   exerciseType: "test",
+    //   weight: 20,
+    //   setCount: 5,
+    //   repCount: 4,
+    // },
   ]);
   constructor() {}
 

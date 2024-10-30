@@ -11,6 +11,7 @@ import { HlmLabelDirective } from "@spartan-ng/ui-label-helm";
 import { BrnSelectImports } from "@spartan-ng/ui-select-brain";
 import { HlmSelectImports } from "@spartan-ng/ui-select-helm";
 import { ExerciseService } from "../../services/exercise/exercise.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-exercise-creator",
@@ -26,6 +27,7 @@ import { ExerciseService } from "../../services/exercise/exercise.service";
   templateUrl: "./exercise-creator.component.html",
 })
 export class ExerciseCreatorComponent {
+  private routerService = inject(Router);
   exerciseService = inject(ExerciseService);
   exerciseCreationForm = new FormGroup({
     exerciseType: new FormControl("", [Validators.required]),
@@ -46,7 +48,7 @@ export class ExerciseCreatorComponent {
         setCount,
         weight,
       });
-      this.exerciseCreationForm.reset();
+      this.routerService.navigate([""]);
     }
   }
 }

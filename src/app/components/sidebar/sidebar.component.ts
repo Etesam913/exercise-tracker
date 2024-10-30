@@ -13,6 +13,5 @@ export class SidebarComponent {
   sidebarRoutes = [
     { path: "/", name: "Home" },
     { path: "/exercise-creator", name: "Exercise Creator" },
-    { path: "/exercise-schedule", name: "Exercise Schedule" },
   ];
 }
