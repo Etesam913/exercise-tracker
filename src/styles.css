@@ -57,6 +57,7 @@
 
 body {
   overscroll-behavior-y: none;
+  background-color: hsl(var(--background));
 }
 
 .exercise-grid {
@@ -64,4 +65,10 @@ body {
   grid-template-columns: 1fr 4fr;
   gap: 3rem;
   margin: 1rem 0;
+}
+
+@media (max-width: 768px) {
+  .exercise-grid {
+    grid-template-columns: 1fr;
+  }
 }

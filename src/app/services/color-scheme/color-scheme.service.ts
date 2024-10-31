@@ -1,4 +1,4 @@
-import { Injectable, Renderer2, RendererFactory2 } from "@angular/core";
+import { inject, Injectable, Renderer2, RendererFactory2 } from "@angular/core";
 
 @Injectable({
   providedIn: "root",
@@ -9,9 +9,10 @@ export class ColorSchemeService {
   );
   private currentScheme: string;
   private renderer: Renderer2;
+  private rendererFactory = inject(RendererFactory2);
 
-  constructor(private rendererFactory: RendererFactory2) {
-    this.renderer = rendererFactory.createRenderer(null, null);
+  constructor() {
+    this.renderer = this.rendererFactory.createRenderer(null, null);
     this.currentScheme = this.getColorScheme();
     this.mediaQuery.addEventListener(
       "change",
@@ -30,7 +31,7 @@ export class ColorSchemeService {
     console.log(`Color scheme changed to: ${newScheme}`);
     this.currentScheme = newScheme;
     // You can add logic here to update your app's theme accordingly
-    const mainElement = document.querySelector("main");
+    const mainElement = document.querySelector("body");
     if (!mainElement) return;
     if (newScheme === "dark") {
       this.renderer.addClass(mainElement, "dark");

@@ -71,4 +71,15 @@ export class CalendarService {
     }
     this.calendarState.set({ year, month, day: 1 });
   }
+
+  setDay(day: number) {
+    let { year, month } = this.calendarState();
+    const numberOfDaysInMonth = this.getNumberOfDaysInMonth(year, month);
+    if (day < 1 || day > numberOfDaysInMonth) {
+      throw new Error(
+        `Invalid day: ${day}. It should be between 1 and ${numberOfDaysInMonth}.`,
+      );
+    }
+    this.calendarState.set({ year, month, day });
+  }
 }

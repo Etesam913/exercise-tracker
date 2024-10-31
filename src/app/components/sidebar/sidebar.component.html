@@ -1,19 +1,19 @@
 <aside
-    class="h-screen w-fit p-3 flex flex-col gap-4 bg-primary-foreground border-r border-r-zinc-200 dark:border-r-zinc-800"
+  class="w-full sm:h-full sm:min-h-screen px-4 py-6 flex flex-col gap-4 bg-primary-foreground border-r border-r-zinc-200 dark:border-r-zinc-800"
 >
-    <h1 class="font-bold text-xl">Exercise Tracker</h1>
+  <h1 class="font-bold text-xl">Exercise Tracker</h1>
 
-    <ul class="[&>*]:leading-9">
-        @for (route of sidebarRoutes; track route.path) {
-            <li>
-                <a
-                    routerLinkActive="underline"
-                    [routerLinkActiveOptions]="{ exact: true }"
-                    class="underline-offset-4"
-                    [routerLink]="route.path"
-                    >{{ route.name }}</a
-                >
-            </li>
-        }
-    </ul>
+  <ul class="[&>*]:leading-9">
+    @for (route of sidebarRoutes; track route.path) {
+      <li>
+        <a
+          routerLinkActive="underline"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="underline-offset-4"
+          [routerLink]="route.path"
+          >{{ route.name }}</a
+        >
+      </li>
+    }
+  </ul>
 </aside>
