@@ -48,6 +48,7 @@
     "class-variance-authority": "^0.6.0",
     "clsx": "^2.1.1",
     "embla-carousel-angular": "^14.0.0",
+    "mobile-drag-drop": "3.0.0-rc.0",
     "ngx-scrollbar": "^13.0.1",
     "ngx-sonner": "^2.0.0",
     "rxjs": "~7.8.0",
