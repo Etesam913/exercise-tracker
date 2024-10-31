@@ -1,4 +1,10 @@
-<li hlmCard class="mt-3" draggable="true">
+<li
+  hlmCard
+  [id]="exercise.id"
+  class="mt-3"
+  draggable="true"
+  (dragstart)="onDragStart($event)"
+>
   <div hlmCardHeader>
     <h3 hlmCardTitle>{{ exercise.exerciseType | exerciseType }}</h3>
     <p hlmCardDescription>{{ exercise.weight }} lbs</p>

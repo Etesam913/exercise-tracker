@@ -43,6 +43,7 @@ export class ExerciseCreatorComponent {
       if (!exerciseType || !repCount || !setCount || !weight) return;
 
       this.exerciseService.addExercise({
+        id: crypto.randomUUID(),
         exerciseType,
         repCount,
         setCount,

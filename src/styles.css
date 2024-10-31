@@ -74,7 +74,7 @@ body {
 }
 
 .dnd-poly-drag-image {
-  opacity: 0.5 !important;
+  opacity: 0.7 !important;
 }
 /* applied when the drag effect is none and the operation ends */
 .dnd-poly-drag-image.dnd-poly-snapback {

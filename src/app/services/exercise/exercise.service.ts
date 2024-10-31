@@ -1,6 +1,7 @@
 import { Injectable, signal } from "@angular/core";
 
 export type Exercise = {
+  id: string;
   exerciseType: string;
   repCount: number;
   setCount: number;
@@ -13,6 +14,7 @@ export type Exercise = {
 export class ExerciseService {
   exercises = signal<Exercise[]>([
     {
+      id: "abc",
       exerciseType: "test",
       weight: 20,
       setCount: 5,
