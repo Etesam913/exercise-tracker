@@ -18,7 +18,6 @@ export class GlobalErrorHandlerService implements ErrorHandler {
       // Handle generic error
       console.warn("An unexpected error occurred");
     }
-    console.log("should show toast");
     toast("An Unexpected Error Occurred", {
       position: "top-right",
       dismissible: true,

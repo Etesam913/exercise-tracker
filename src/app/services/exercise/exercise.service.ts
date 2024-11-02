@@ -19,21 +19,18 @@ export type Exercise = {
   providedIn: "root",
 })
 export class ExerciseService {
-  private collectionRef!: CollectionReference<DocumentData, DocumentData>;
-  exercises = signal<Exercise[]>([
-    // {
-    //   id: "abc",
-    //   exerciseType: "test",
-    //   weight: 20,
-    //   setCount: 5,
-    //   repCount: 4,
-    // },
-  ]);
+  private exerciseCollectionRef!: CollectionReference<
+    DocumentData,
+    DocumentData
+  >;
+
+  exercises = signal<Exercise[]>([]);
+
   private firestoreService = inject(FirestoreService);
   private firestore: Firestore = inject(Firestore);
 
   constructor() {
-    this.collectionRef = collection(this.firestore, "exercises");
+    this.exerciseCollectionRef = collection(this.firestore, "exercises");
   }
 
   async removeExercise(exerciseId: string) {
@@ -45,10 +42,10 @@ export class ExerciseService {
 
   async addExercise(newExercise: Omit<Exercise, "id">) {
     const newDoc = await this.firestoreService.addDocument(
-      this.collectionRef,
+      this.exerciseCollectionRef,
       newExercise,
     );
-    console.log(newDoc.id);
+
     this.exercises.update((prevExercises) => [
       ...prevExercises,
       { ...newExercise, id: newDoc.id },
@@ -59,7 +56,7 @@ export class ExerciseService {
 
   async loadInExercises() {
     const exercisesFromFirestore = (await this.firestoreService.getData(
-      this.collectionRef,
+      this.exerciseCollectionRef,
     )) as Exercise[];
     if (exercisesFromFirestore) {
       this.exercises.set(exercisesFromFirestore);

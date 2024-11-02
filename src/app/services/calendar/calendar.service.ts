@@ -1,10 +1,34 @@
-import { Injectable, signal } from "@angular/core";
+import { inject, Injectable, signal } from "@angular/core";
+import { FirestoreService } from "../firestore/firestore.service";
+import {
+  collection,
+  CollectionReference,
+  DocumentData,
+  Firestore,
+  query,
+  where,
+} from "@angular/fire/firestore";
 
 type CalendarData = {
   year: number;
   month: number;
   day: number;
 };
+
+export type DayDataExercise = {
+  id: string;
+  name: string;
+};
+
+export type DayData = {
+  id: string;
+  day: number;
+  month: number;
+  year: number;
+  exerciseData: DayDataExercise[];
+};
+
+type DayDataSignalRecord = Record<string, DayData>;
 
 @Injectable({
   providedIn: "root",
@@ -15,6 +39,20 @@ export class CalendarService {
     month: new Date().getMonth(),
     day: new Date().getDate(),
   });
+  dayDataMap = signal<Map<string, DayDataExercise[]>>(new Map());
+
+  private firestoreService = inject(FirestoreService);
+  private firestore: Firestore = inject(Firestore);
+  private dayDataCollectionRef!: CollectionReference<
+    DocumentData,
+    DocumentData
+  >;
+
+  monthlyDayData = signal<DayDataSignalRecord>({});
+
+  constructor() {
+    this.dayDataCollectionRef = collection(this.firestore, "dayData");
+  }
 
   getYear() {
     return this.calendarState().year;
@@ -81,5 +119,26 @@ export class CalendarService {
       );
     }
     this.calendarState.set({ year, month, day });
+  }
+
+  async loadInMonthlyDayData() {
+    const dayDataFromFirestore = (await this.firestoreService.getData(
+      query(
+        this.dayDataCollectionRef,
+        where("month", "==", this.getMonth() + 1),
+        where("year", "==", this.getYear()),
+      ),
+    )) as DayData[];
+    if (dayDataFromFirestore) {
+      const newDayDataMap = dayDataFromFirestore.reduce(
+        (accMap, dayDataObj) => {
+          const mapKey = `${dayDataObj.year}-${dayDataObj.month}-${dayDataObj.day}`;
+          accMap.set(mapKey, dayDataObj.exerciseData);
+          return accMap;
+        },
+        new Map<string, DayDataExercise[]>(),
+      );
+      this.dayDataMap.set(newDayDataMap);
+    }
   }
 }

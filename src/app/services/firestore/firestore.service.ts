@@ -5,8 +5,12 @@ import {
   addDoc,
   deleteDoc,
   CollectionReference,
+  Query,
   doc,
   Firestore,
+  where,
+  query,
+  WhereFilterOp,
 } from "@angular/fire/firestore";
 
 @Injectable({
@@ -16,16 +20,16 @@ export class FirestoreService {
   private firestore: Firestore = inject(Firestore);
 
   /**
-   * Fetches data from the specified collection.
+   * Fetches data from the specified collection, optionally applying a where clause.
    * @param collectionRef - Reference to the Firestore collection.
+   * @param whereClause - Optional where clause to filter the documents.
    * @returns A promise that resolves to an array of document data.
    */
   async getData(
-    collectionRef: CollectionReference<DocumentData, DocumentData>,
-  ): Promise<DocumentData> {
-    const snapshot = await getDocs(collectionRef);
+    queryRef: Query<DocumentData, DocumentData>,
+  ): Promise<DocumentData[]> {
+    const snapshot = await getDocs(queryRef);
     return snapshot.docs.map((doc) => {
-      // return doc.data();
       return { ...doc.data(), id: doc.id };
     });
   }
@@ -37,7 +41,7 @@ export class FirestoreService {
    * @returns A promise that resolves to the added document reference.
    */
   async addDocument(
-    collectionRef: CollectionReference<DocumentData, DocumentData>,
+    collectionRef: CollectionReference<DocumentData>,
     data: Record<string, any>,
   ) {
     return await addDoc(collectionRef, data);

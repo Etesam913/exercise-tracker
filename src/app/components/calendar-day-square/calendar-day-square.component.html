@@ -1,14 +1,22 @@
 <button
   (click)="this.calendarService.setDay(dayNum)"
   type="button"
-  class="border flex border-zinc-950 dark:border-zinc-50 h-16 w-full py-1 px-1.5"
+  class="border flex border-zinc-950 dark:border-zinc-50 min-h-16 h-full w-full pt-1 pb-2 px-1.5 flex-col text-left gap-1"
 >
   <p
-    [class.dark:bg-red-500]="isActive"
-    [class.bg-red-400]="isActive"
-    [class.text-zinc-50]="isActive"
+    [class.dark:bg-red-500]="isActive()"
+    [class.bg-red-400]="isActive()"
+    [class.text-zinc-50]="isActive()"
     class="rounded-full w-8 h-8 px-1.5 flex justify-center items-center"
   >
     {{ dayNum }}
   </p>
+
+  @for (exercise of exercises(); track exercise.id) {
+    <div
+      class="bg-green-600 text-white py-0.5 px-2 w-full rounded-full text-xs overflow-hidden whitespace-nowrap text-ellipsis"
+    >
+      {{ exercise.name }}
+    </div>
+  }
 </button>

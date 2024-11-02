@@ -33,8 +33,8 @@ export class ExerciseCreatorComponent {
   exerciseService = inject(ExerciseService);
   exerciseCreationForm = new FormGroup({
     exerciseType: new FormControl("", [Validators.required]),
-    repCount: new FormControl(1, [Validators.required, Validators.min(1)]),
-    setCount: new FormControl(1, [Validators.required, Validators.min(1)]),
+    repCount: new FormControl(5, [Validators.required, Validators.min(1)]),
+    setCount: new FormControl(5, [Validators.required, Validators.min(1)]),
     weight: new FormControl(30, [Validators.required, Validators.min(5)]),
   });
   isLoading = signal(false);

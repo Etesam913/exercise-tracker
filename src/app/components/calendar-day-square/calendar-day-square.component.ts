@@ -1,4 +1,4 @@
-import { Component, effect, inject, Input } from "@angular/core";
+import { Component, computed, inject, Input } from "@angular/core";
 import { CalendarService } from "../../services/calendar/calendar.service";
 
 @Component({
@@ -10,11 +10,16 @@ import { CalendarService } from "../../services/calendar/calendar.service";
 export class CalendarDaySquareComponent {
   @Input() dayNum!: number;
   calendarService = inject(CalendarService);
-  isActive = false;
+  isActive = computed(
+    () => this.calendarService.calendarState().day === this.dayNum,
+  );
 
-  constructor() {
-    effect(() => {
-      this.isActive = this.calendarService.getDay() === this.dayNum;
-    });
-  }
+  // Using the dayDataMap to get all exercises for
+  exercises = computed(() => {
+    const mapKey = `${this.calendarService.getYear()}-${this.calendarService.getMonth() + 1}-${this.dayNum}`;
+    if (this.calendarService.dayDataMap().has(mapKey)) {
+      return this.calendarService.dayDataMap().get(mapKey)!;
+    }
+    return [];
+  });
 }
