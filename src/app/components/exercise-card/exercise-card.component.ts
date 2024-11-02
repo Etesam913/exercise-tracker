@@ -1,5 +1,8 @@
-import { Component, Input } from "@angular/core";
-import { Exercise } from "../../services/exercise/exercise.service";
+import { Component, inject, Input, signal } from "@angular/core";
+import {
+  Exercise,
+  ExerciseService,
+} from "../../services/exercise/exercise.service";
 import {
   HlmCardDescriptionDirective,
   HlmCardDirective,
@@ -7,6 +10,8 @@ import {
   HlmCardTitleDirective,
 } from "@spartan-ng/ui-card-helm";
 import { ExerciseTypePipe } from "../../pipes/exercise-type/exercise-type.pipe";
+import { HlmButtonDirective } from "@spartan-ng/ui-button-helm";
+import { HlmSpinnerComponent } from "@spartan-ng/ui-spinner-helm";
 
 @Component({
   selector: "app-exercise-card",
@@ -17,11 +22,15 @@ import { ExerciseTypePipe } from "../../pipes/exercise-type/exercise-type.pipe";
     HlmCardHeaderDirective,
     HlmCardTitleDirective,
     ExerciseTypePipe,
+    HlmButtonDirective,
+    HlmSpinnerComponent,
   ],
   templateUrl: "./exercise-card.component.html",
 })
 export class ExerciseCardComponent {
   @Input() exercise!: Exercise;
+  exerciseService = inject(ExerciseService);
+  isLoading = signal(false);
 
   onDragStart(event: DragEvent) {
     const eventTarget = event.target as HTMLLIElement;
@@ -45,5 +54,11 @@ export class ExerciseCardComponent {
 
     // Cleanup: Remove the drag image after a brief delay to allow drag to start
     setTimeout(() => document.body.removeChild(dragImage), 0);
+  }
+
+  async removeExercise(exerciseId: string) {
+    this.isLoading.set(true);
+    await this.exerciseService.removeExercise(exerciseId);
+    this.isLoading.set(false);
   }
 }

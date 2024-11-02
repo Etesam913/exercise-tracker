@@ -1,4 +1,4 @@
-import { Component, inject } from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -12,6 +12,7 @@ import { BrnSelectImports } from "@spartan-ng/ui-select-brain";
 import { HlmSelectImports } from "@spartan-ng/ui-select-helm";
 import { ExerciseService } from "../../services/exercise/exercise.service";
 import { Router } from "@angular/router";
+import { HlmSpinnerComponent } from "@spartan-ng/ui-spinner-helm";
 
 @Component({
   selector: "app-exercise-creator",
@@ -23,6 +24,7 @@ import { Router } from "@angular/router";
     HlmLabelDirective,
     HlmButtonDirective,
     ReactiveFormsModule,
+    HlmSpinnerComponent,
   ],
   templateUrl: "./exercise-creator.component.html",
 })
@@ -35,20 +37,22 @@ export class ExerciseCreatorComponent {
     setCount: new FormControl(1, [Validators.required, Validators.min(1)]),
     weight: new FormControl(30, [Validators.required, Validators.min(5)]),
   });
+  isLoading = signal(false);
 
-  onSubmit() {
+  async onSubmit() {
     if (this.exerciseCreationForm.valid) {
+      this.isLoading.set(true);
       const { exerciseType, repCount, setCount, weight } =
         this.exerciseCreationForm.value;
       if (!exerciseType || !repCount || !setCount || !weight) return;
 
-      this.exerciseService.addExercise({
-        id: crypto.randomUUID(),
+      await this.exerciseService.addExercise({
         exerciseType,
         repCount,
         setCount,
         weight,
       });
+      this.isLoading.set(false);
       this.routerService.navigate([""]);
     }
   }

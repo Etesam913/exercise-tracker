@@ -1,11 +1,11 @@
 <li
   hlmCard
   [id]="exercise.id"
-  class="mt-3"
+  class="mt-3 cursor-move"
   draggable="true"
   (dragstart)="onDragStart($event)"
 >
-  <div hlmCardHeader>
+  <div hlmCardHeader class="relative">
     <h3 hlmCardTitle>{{ exercise.exerciseType | exerciseType }}</h3>
     <p hlmCardDescription>{{ exercise.weight }} lbs</p>
     <p hlmCardDescription>
@@ -14,5 +14,17 @@
       {{ exercise.repCount }}
       {{ exercise.repCount == 1 ? "rep" : "reps" }}
     </p>
+    <button
+      class="absolute top-2 right-2"
+      hlmBtn
+      [disabled]="isLoading()"
+      (click)="removeExercise(exercise.id)"
+    >
+      @if (isLoading()) {
+        <hlm-spinner size="sm" />
+      } @else {
+        Delete
+      }
+    </button>
   </div>
 </li>

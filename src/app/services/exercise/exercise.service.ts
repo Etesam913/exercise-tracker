@@ -1,5 +1,11 @@
 import { inject, Injectable, signal } from "@angular/core";
 import { FirestoreService } from "../firestore/firestore.service";
+import {
+  CollectionReference,
+  DocumentData,
+  Firestore,
+  collection,
+} from "@angular/fire/firestore";
 
 export type Exercise = {
   id: string;
@@ -13,6 +19,7 @@ export type Exercise = {
   providedIn: "root",
 })
 export class ExerciseService {
+  private collectionRef!: CollectionReference<DocumentData, DocumentData>;
   exercises = signal<Exercise[]>([
     // {
     //   id: "abc",
@@ -23,16 +30,36 @@ export class ExerciseService {
     // },
   ]);
   private firestoreService = inject(FirestoreService);
+  private firestore: Firestore = inject(Firestore);
 
-  constructor() {}
+  constructor() {
+    this.collectionRef = collection(this.firestore, "exercises");
+  }
 
-  addExercise(newExercise: Exercise) {
-    this.exercises.update((prevExercises) => [...prevExercises, newExercise]);
+  async removeExercise(exerciseId: string) {
+    await this.firestoreService.deleteDocument("exercises", exerciseId);
+    this.exercises.update((prevExercises) =>
+      prevExercises.filter(({ id }) => id !== exerciseId),
+    );
+  }
+
+  async addExercise(newExercise: Omit<Exercise, "id">) {
+    const newDoc = await this.firestoreService.addDocument(
+      this.collectionRef,
+      newExercise,
+    );
+    console.log(newDoc.id);
+    this.exercises.update((prevExercises) => [
+      ...prevExercises,
+      { ...newExercise, id: newDoc.id },
+    ]);
+
+    return newDoc.id;
   }
 
   async loadInExercises() {
     const exercisesFromFirestore = (await this.firestoreService.getData(
-      "exercises",
+      this.collectionRef,
     )) as Exercise[];
     if (exercisesFromFirestore) {
       this.exercises.set(exercisesFromFirestore);
