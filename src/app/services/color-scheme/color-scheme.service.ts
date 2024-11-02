@@ -14,6 +14,7 @@ export class ColorSchemeService {
   constructor() {
     this.renderer = this.rendererFactory.createRenderer(null, null);
     this.currentScheme = this.getColorScheme();
+    this.applyColorScheme(this.currentScheme); // Apply the initial color scheme on app start
     this.mediaQuery.addEventListener(
       "change",
       this.handleColorSchemeChange.bind(this),
@@ -30,10 +31,14 @@ export class ColorSchemeService {
     const newScheme = event.matches ? "dark" : "light";
     console.log(`Color scheme changed to: ${newScheme}`);
     this.currentScheme = newScheme;
-    // You can add logic here to update your app's theme accordingly
+    this.applyColorScheme(newScheme);
+  }
+
+  // Apply the color scheme to the app
+  private applyColorScheme(scheme: string) {
     const mainElement = document.querySelector("body");
     if (!mainElement) return;
-    if (newScheme === "dark") {
+    if (scheme === "dark") {
       this.renderer.addClass(mainElement, "dark");
     } else {
       this.renderer.removeClass(mainElement, "dark");
