@@ -17,8 +17,13 @@
         {{ exercise.repCount == 1 ? "rep" : "reps" }}
       </p>
       @if (!isInCalendar) {
-        <button brnDialogTrigger class="absolute top-2 right-2" hlmBtn>
-          Delete
+        <button
+          brnDialogTrigger
+          variant="outline"
+          class="absolute top-2 right-2 px-2.5"
+          hlmBtn
+        >
+          <hlm-icon size="sm" strokeWidth="2.5px" name="lucideTrash2" />
         </button>
       }
     </div>

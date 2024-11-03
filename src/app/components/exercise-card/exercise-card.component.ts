@@ -26,6 +26,8 @@ import {
 } from "@spartan-ng/ui-dialog-helm";
 import { HlmLabelDirective } from "@spartan-ng/ui-label-helm";
 import { HlmInputDirective } from "@spartan-ng/ui-input-helm";
+import { HlmIconComponent, provideIcons } from "@spartan-ng/ui-icon-helm";
+import { lucideTrash2 } from "@ng-icons/lucide";
 
 @Component({
   selector: "app-exercise-card",
@@ -48,7 +50,9 @@ import { HlmInputDirective } from "@spartan-ng/ui-input-helm";
     HlmDialogDescriptionDirective,
     HlmLabelDirective,
     HlmInputDirective,
+    HlmIconComponent,
   ],
+  providers: [provideIcons({ lucideTrash2 })],
   templateUrl: "./exercise-card.component.html",
 })
 export class ExerciseCardComponent {
