@@ -5,8 +5,16 @@
       {{ this.calendarService.getYear() }}
     </h3>
     <span class="flex gap-2 items-center">
-      <button hlmBtn (click)="calendarService.previousMonth()"><-</button>
-      <button hlmBtn (click)="calendarService.nextMonth()">-></button>
+      <button
+        variant="outline"
+        hlmBtn
+        (click)="calendarService.previousMonth()"
+      >
+        <hlm-icon size="sm" name="lucideChevronLeft" />
+      </button>
+      <button variant="outline" hlmBtn (click)="calendarService.nextMonth()">
+        <hlm-icon size="sm" name="lucideChevronRight" />
+      </button>
     </span>
   </section>
   <section class="grid grid-cols-7">

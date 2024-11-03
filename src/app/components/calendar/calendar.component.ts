@@ -3,6 +3,8 @@ import { CalendarService } from "../../services/calendar/calendar.service";
 import { CalendarDaySquareComponent } from "../calendar-day-square/calendar-day-square.component";
 import { HlmButtonDirective } from "@spartan-ng/ui-button-helm";
 import { ExerciseCardComponent } from "../exercise-card/exercise-card.component";
+import { HlmIconComponent, provideIcons } from "@spartan-ng/ui-icon-helm";
+import { lucideChevronLeft, lucideChevronRight } from "@ng-icons/lucide";
 
 @Component({
   selector: "app-calendar",
@@ -11,7 +13,9 @@ import { ExerciseCardComponent } from "../exercise-card/exercise-card.component"
     CalendarDaySquareComponent,
     HlmButtonDirective,
     ExerciseCardComponent,
+    HlmIconComponent,
   ],
+  providers: [provideIcons({ lucideChevronLeft, lucideChevronRight })],
   templateUrl: "./calendar.component.html",
 })
 export class CalendarComponent {

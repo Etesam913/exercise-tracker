@@ -12,6 +12,20 @@ import {
 import { ExerciseTypePipe } from "../../pipes/exercise-type/exercise-type.pipe";
 import { HlmButtonDirective } from "@spartan-ng/ui-button-helm";
 import { HlmSpinnerComponent } from "@spartan-ng/ui-spinner-helm";
+import {
+  BrnDialogContentDirective,
+  BrnDialogTriggerDirective,
+} from "@spartan-ng/ui-dialog-brain";
+import {
+  HlmDialogComponent,
+  HlmDialogContentComponent,
+  HlmDialogDescriptionDirective,
+  HlmDialogFooterComponent,
+  HlmDialogHeaderComponent,
+  HlmDialogTitleDirective,
+} from "@spartan-ng/ui-dialog-helm";
+import { HlmLabelDirective } from "@spartan-ng/ui-label-helm";
+import { HlmInputDirective } from "@spartan-ng/ui-input-helm";
 
 @Component({
   selector: "app-exercise-card",
@@ -24,6 +38,16 @@ import { HlmSpinnerComponent } from "@spartan-ng/ui-spinner-helm";
     ExerciseTypePipe,
     HlmButtonDirective,
     HlmSpinnerComponent,
+    BrnDialogTriggerDirective,
+    BrnDialogContentDirective,
+    HlmDialogComponent,
+    HlmDialogContentComponent,
+    HlmDialogHeaderComponent,
+    HlmDialogFooterComponent,
+    HlmDialogTitleDirective,
+    HlmDialogDescriptionDirective,
+    HlmLabelDirective,
+    HlmInputDirective,
   ],
   templateUrl: "./exercise-card.component.html",
 })
