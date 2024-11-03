@@ -1,12 +1,17 @@
-import { Component, inject, effect } from "@angular/core";
+import { Component, inject, effect, computed } from "@angular/core";
 import { CalendarService } from "../../services/calendar/calendar.service";
 import { CalendarDaySquareComponent } from "../calendar-day-square/calendar-day-square.component";
 import { HlmButtonDirective } from "@spartan-ng/ui-button-helm";
+import { ExerciseCardComponent } from "../exercise-card/exercise-card.component";
 
 @Component({
   selector: "app-calendar",
   standalone: true,
-  imports: [CalendarDaySquareComponent, HlmButtonDirective],
+  imports: [
+    CalendarDaySquareComponent,
+    HlmButtonDirective,
+    ExerciseCardComponent,
+  ],
   templateUrl: "./calendar.component.html",
 })
 export class CalendarComponent {
@@ -14,6 +19,15 @@ export class CalendarComponent {
   daysInMonthArr: number[] = [];
   private previousMonth: number | null = null;
   private previousYear: number | null = null;
+
+  // Using the dayDataMap to get all exercises for the inputted day
+  exercisesForActiveDay = computed(() => {
+    const mapKey = `${this.calendarService.getYear()}-${this.calendarService.getMonth() + 1}-${this.calendarService.getDay()}`;
+    if (this.calendarService.dayDataMap().has(mapKey)) {
+      return this.calendarService.dayDataMap().get(mapKey)!;
+    }
+    return [];
+  });
 
   constructor() {
     effect(() => {

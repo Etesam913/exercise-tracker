@@ -29,6 +29,7 @@ import { HlmSpinnerComponent } from "@spartan-ng/ui-spinner-helm";
 })
 export class ExerciseCardComponent {
   @Input() exercise!: Exercise;
+  @Input() isInCalendar!: boolean;
   exerciseService = inject(ExerciseService);
   isLoading = signal(false);
 

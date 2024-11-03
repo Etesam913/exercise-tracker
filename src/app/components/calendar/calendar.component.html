@@ -27,5 +27,15 @@
       {{ this.calendarService.getMonthFullName() }}
       {{ this.calendarService.getDay() }}
     </h3>
+    <ul>
+      @for (exercise of exercisesForActiveDay(); track exercise.id) {
+        <app-exercise-card [exercise]="exercise" [isInCalendar]="true" />
+      } @empty {
+        <li>
+          There are no exercises set for this day. Drag an exercise on the
+          calendar square to set an exercise.
+        </li>
+      }
+    </ul>
   </section>
 </div>

@@ -14,8 +14,8 @@ export class CalendarDaySquareComponent {
     () => this.calendarService.calendarState().day === this.dayNum,
   );
 
-  // Using the dayDataMap to get all exercises for
-  exercises = computed(() => {
+  // Using the dayDataMap to get all exercises for the inputted day
+  exercisesForCurrentDay = computed(() => {
     const mapKey = `${this.calendarService.getYear()}-${this.calendarService.getMonth() + 1}-${this.dayNum}`;
     if (this.calendarService.dayDataMap().has(mapKey)) {
       return this.calendarService.dayDataMap().get(mapKey)!;

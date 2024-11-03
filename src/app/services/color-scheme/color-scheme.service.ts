@@ -29,7 +29,6 @@ export class ColorSchemeService {
   // Handle color scheme change
   private handleColorSchemeChange(event: MediaQueryListEvent) {
     const newScheme = event.matches ? "dark" : "light";
-    console.log(`Color scheme changed to: ${newScheme}`);
     this.currentScheme = newScheme;
     this.applyColorScheme(newScheme);
   }

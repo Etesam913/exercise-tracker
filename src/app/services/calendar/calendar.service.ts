@@ -8,6 +8,7 @@ import {
   query,
   where,
 } from "@angular/fire/firestore";
+import { Exercise } from "../exercise/exercise.service";
 
 type CalendarData = {
   year: number;
@@ -15,17 +16,12 @@ type CalendarData = {
   day: number;
 };
 
-export type DayDataExercise = {
-  id: string;
-  name: string;
-};
-
 export type DayData = {
   id: string;
   day: number;
   month: number;
   year: number;
-  exerciseData: DayDataExercise[];
+  exerciseData: Exercise[];
 };
 
 type DayDataSignalRecord = Record<string, DayData>;
@@ -39,7 +35,7 @@ export class CalendarService {
     month: new Date().getMonth(),
     day: new Date().getDate(),
   });
-  dayDataMap = signal<Map<string, DayDataExercise[]>>(new Map());
+  dayDataMap = signal<Map<string, Exercise[]>>(new Map());
 
   private firestoreService = inject(FirestoreService);
   private firestore: Firestore = inject(Firestore);
@@ -136,7 +132,7 @@ export class CalendarService {
           accMap.set(mapKey, dayDataObj.exerciseData);
           return accMap;
         },
-        new Map<string, DayDataExercise[]>(),
+        new Map<string, Exercise[]>(),
       );
       this.dayDataMap.set(newDayDataMap);
     }
