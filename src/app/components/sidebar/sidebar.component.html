@@ -16,5 +16,11 @@
       </li>
     }
   </ul>
-  <button class="mt-auto" hlmBtn>Login</button>
+  <button class="mt-auto" (click)="authButtonOnClick()" hlmBtn>
+    @if (firebaseAuthService.isLoggedIn()) {
+      Log Out
+    } @else {
+      Login using Google
+    }
+  </button>
 </aside>

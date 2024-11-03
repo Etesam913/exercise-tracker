@@ -8,9 +8,6 @@ import {
   Query,
   doc,
   Firestore,
-  where,
-  query,
-  WhereFilterOp,
 } from "@angular/fire/firestore";
 
 @Injectable({
@@ -22,7 +19,6 @@ export class FirestoreService {
   /**
    * Fetches data from the specified collection, optionally applying a where clause.
    * @param collectionRef - Reference to the Firestore collection.
-   * @param whereClause - Optional where clause to filter the documents.
    * @returns A promise that resolves to an array of document data.
    */
   async getData(

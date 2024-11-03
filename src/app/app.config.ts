@@ -7,6 +7,7 @@ import { provideRouter } from "@angular/router";
 import { provideFirebaseApp, initializeApp } from "@angular/fire/app";
 import { environment } from "../environments/environment.prod";
 import { routes } from "./app.routes";
+import { provideAuth, getAuth } from "@angular/fire/auth";
 import { getFirestore, provideFirestore } from "@angular/fire/firestore";
 import { GlobalErrorHandlerService } from "./services/global-error-handler/global-error-handler.service";
 
@@ -16,6 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => getFirestore()),
+    provideAuth(() => getAuth()),
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
   ],
 };
