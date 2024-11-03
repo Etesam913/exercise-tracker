@@ -38,22 +38,30 @@ export class ExerciseCreatorComponent {
     weight: new FormControl(30, [Validators.required, Validators.min(5)]),
   });
   isLoading = signal(false);
-
+  doesDuplicateExerciseExist = signal(false);
   async onSubmit() {
+    this.doesDuplicateExerciseExist.set(false);
     if (this.exerciseCreationForm.valid) {
       this.isLoading.set(true);
       const { exerciseType, repCount, setCount, weight } =
         this.exerciseCreationForm.value;
       if (!exerciseType || !repCount || !setCount || !weight) return;
 
-      await this.exerciseService.addExercise({
+      const didSucceed = await this.exerciseService.addExercise({
         exerciseType,
         repCount,
         setCount,
         weight,
       });
       this.isLoading.set(false);
-      this.routerService.navigate([""]);
+
+      if (didSucceed) {
+        this.routerService.navigate([""]);
+      }
+      // There is a duplicate
+      else {
+        this.doesDuplicateExerciseExist.set(true);
+      }
     }
   }
 }

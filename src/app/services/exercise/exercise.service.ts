@@ -40,7 +40,19 @@ export class ExerciseService {
     );
   }
 
-  async addExercise(newExercise: Omit<Exercise, "id">) {
+  async addExercise(newExercise: Omit<Exercise, "id">): Promise<boolean> {
+    if (
+      this.exercises().some(
+        ({ exerciseType, repCount, setCount, weight }) =>
+          exerciseType === newExercise.exerciseType &&
+          repCount === newExercise.repCount &&
+          setCount === newExercise.setCount &&
+          weight === newExercise.weight,
+      )
+    ) {
+      return false;
+    }
+
     const newDoc = await this.firestoreService.addDocument(
       this.exerciseCollectionRef,
       newExercise,
@@ -50,8 +62,7 @@ export class ExerciseService {
       ...prevExercises,
       { ...newExercise, id: newDoc.id },
     ]);
-
-    return newDoc.id;
+    return true;
   }
 
   async loadInExercises() {
