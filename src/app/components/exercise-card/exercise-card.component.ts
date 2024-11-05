@@ -1,4 +1,14 @@
-import { Component, inject, Input, signal } from "@angular/core";
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  signal,
+  ViewChild,
+} from "@angular/core";
 import {
   Exercise,
   ExerciseService,
@@ -28,6 +38,7 @@ import { HlmLabelDirective } from "@spartan-ng/ui-label-helm";
 import { HlmInputDirective } from "@spartan-ng/ui-input-helm";
 import { HlmIconComponent, provideIcons } from "@spartan-ng/ui-icon-helm";
 import { lucideTrash2 } from "@ng-icons/lucide";
+import { fromEvent, map, Subject, takeUntil } from "rxjs";
 
 @Component({
   selector: "app-exercise-card",
@@ -55,11 +66,26 @@ import { lucideTrash2 } from "@ng-icons/lucide";
   providers: [provideIcons({ lucideTrash2 })],
   templateUrl: "./exercise-card.component.html",
 })
-export class ExerciseCardComponent {
+export class ExerciseCardComponent implements AfterViewInit, OnDestroy {
+  private unsubscribe$ = new Subject<void>();
+  @ViewChild("dragCard") card!: ElementRef<HTMLLIElement>;
   @Input() exercise!: Exercise;
   @Input() isInCalendar!: boolean;
   exerciseService = inject(ExerciseService);
   isLoading = signal(false);
+
+  ngAfterViewInit(): void {
+    if (this.card.nativeElement) {
+      fromEvent(this.card.nativeElement, "dragstart")
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((e) => this.onDragStart(e as DragEvent));
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
   onDragStart(event: DragEvent) {
     const eventTarget = event.target as HTMLLIElement;

@@ -1,7 +1,11 @@
 <button
+  #daySquare
   (click)="this.calendarService.setDay(dayNum)"
   type="button"
   class="border flex border-zinc-950 dark:border-zinc-50 min-h-16 h-full w-full pt-1 pb-2 px-1.5 flex-col text-left gap-1"
+  [class.border-dashed]="this.isDragOver()"
+  [class.!border-blue-500]="this.isDragOver()"
+  [class.border-2]="this.isDragOver()"
 >
   <p
     [class.dark:bg-red-500]="isActive()"

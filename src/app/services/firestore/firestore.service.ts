@@ -4,6 +4,7 @@ import {
   getDocs,
   addDoc,
   deleteDoc,
+  setDoc,
   CollectionReference,
   Query,
   doc,
@@ -50,5 +51,21 @@ export class FirestoreService {
   async deleteDocument(collectionName: string, docId: string) {
     const docRef = doc(this.firestore, collectionName, docId);
     return await deleteDoc(docRef);
+  }
+
+  /**
+   * Sets a document in Firestore, overwriting any existing data.
+   * @param collectionName - Name of the Firestore collection.
+   * @param docId - ID of the document to set.
+   * @param data - Data to be set in the document.
+   * @returns A promise that resolves when the document is set.
+   */
+  async setDocument(
+    collectionName: string,
+    docId: string,
+    data: Record<string, any>,
+  ) {
+    const docRef = doc(this.firestore, collectionName, docId);
+    return await setDoc(docRef, data, { merge: true });
   }
 }

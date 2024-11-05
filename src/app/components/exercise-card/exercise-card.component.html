@@ -1,9 +1,9 @@
 <li
   hlmCard
-  [id]="exercise.id"
+  #dragCard
   class="mt-3"
+  [id]="exercise.id"
   [draggable]="!isInCalendar"
-  (dragstart)="onDragStart($event)"
   [class.cursor-move]="!isInCalendar"
 >
   <hlm-dialog>
