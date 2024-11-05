@@ -33,7 +33,6 @@ export class CalendarDaySquareComponent implements AfterViewInit, OnDestroy {
     fromEvent(this.daySquare.nativeElement, "dragenter")
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((e) => {
-        const dragEvent = e as DragEvent;
         this.dragEnterCount += 1;
         if (this.dragEnterCount === 1) {
           this.isDragOver.set(true);

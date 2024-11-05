@@ -1,14 +1,8 @@
-import { inject, Injectable, signal } from "@angular/core";
+import { computed, inject, Injectable, signal } from "@angular/core";
 import { FirestoreService } from "../firestore/firestore.service";
-import {
-  collection,
-  CollectionReference,
-  DocumentData,
-  Firestore,
-  query,
-  where,
-} from "@angular/fire/firestore";
+import { collection, Firestore, query, where } from "@angular/fire/firestore";
 import { Exercise } from "../exercise/exercise.service";
+import { FirebaseAuthService } from "../firebase-auth/firebase-auth.service";
 
 type CalendarData = {
   year: number;
@@ -36,19 +30,20 @@ export class CalendarService {
     day: new Date().getDate(),
   });
   dayDataMap = signal<Map<string, Exercise[]>>(new Map());
-
+  private firebaseAuthService = inject(FirebaseAuthService);
   private firestoreService = inject(FirestoreService);
   private firestore: Firestore = inject(Firestore);
-  private dayDataCollectionRef!: CollectionReference<
-    DocumentData,
-    DocumentData
-  >;
+  dayDataCollectionRef = computed(() => {
+    const { isLoggedIn, userID } = this.firebaseAuthService.loginState();
+    if (isLoggedIn) {
+      return collection(this.firestore, `users/${userID}/dayData`);
+    }
+    return null;
+  });
 
   monthlyDayData = signal<DayDataSignalRecord>({});
 
-  constructor() {
-    this.dayDataCollectionRef = collection(this.firestore, "dayData");
-  }
+  constructor() {}
 
   getYear() {
     return this.calendarState().year;
@@ -118,9 +113,11 @@ export class CalendarService {
   }
 
   async loadInMonthlyDayData() {
+    const dayDataCollection = this.dayDataCollectionRef();
+    if (!dayDataCollection) return;
     const dayDataFromFirestore = (await this.firestoreService.getData(
       query(
-        this.dayDataCollectionRef,
+        dayDataCollection,
         where("month", "==", this.getMonth() + 1),
         where("year", "==", this.getYear()),
       ),

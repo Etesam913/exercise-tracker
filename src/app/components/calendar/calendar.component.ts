@@ -5,6 +5,7 @@ import { HlmButtonDirective } from "@spartan-ng/ui-button-helm";
 import { ExerciseCardComponent } from "../exercise-card/exercise-card.component";
 import { HlmIconComponent, provideIcons } from "@spartan-ng/ui-icon-helm";
 import { lucideChevronLeft, lucideChevronRight } from "@ng-icons/lucide";
+import { FirebaseAuthService } from "../../services/firebase-auth/firebase-auth.service";
 
 @Component({
   selector: "app-calendar",
@@ -20,10 +21,10 @@ import { lucideChevronLeft, lucideChevronRight } from "@ng-icons/lucide";
 })
 export class CalendarComponent {
   calendarService = inject(CalendarService);
+  private authService = inject(FirebaseAuthService);
   daysInMonthArr: number[] = [];
   private previousMonth: number | null = null;
   private previousYear: number | null = null;
-
   // Using the dayDataMap to get all exercises for the inputted day
   exercisesForActiveDay = computed(() => {
     const mapKey = `${this.calendarService.getYear()}-${this.calendarService.getMonth() + 1}-${this.calendarService.getDay()}`;
@@ -44,9 +45,12 @@ export class CalendarComponent {
       for (let i = 0; i < daysInMonth; i++) {
         this.daysInMonthArr.push(i + 1);
       }
-
       // When the month or the year changes, then we need to fetch the data for the month and year
-      if (this.previousMonth !== month || this.previousYear !== year) {
+      if (
+        this.previousMonth !== month ||
+        this.previousYear !== year ||
+        this.calendarService.dayDataCollectionRef()
+      ) {
         this.calendarService.loadInMonthlyDayData();
       }
 
