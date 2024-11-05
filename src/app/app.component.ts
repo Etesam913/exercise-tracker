@@ -17,12 +17,12 @@ import { HlmToasterComponent } from "@spartan-ng/ui-sonner-helm";
   ],
   templateUrl: "./app.component.html",
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   titleService = inject(Title);
   colorSchemeService = inject(ColorSchemeService);
   exerciseService = inject(ExerciseService);
 
-  ngOnInit(): void {
-    this.exerciseService.loadInExercises();
-  }
+  // ngOnInit(): void {
+  //   this.exerciseService.loadInExercises();
+  // }
 }

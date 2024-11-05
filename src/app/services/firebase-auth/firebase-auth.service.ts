@@ -9,7 +9,12 @@ import {
 } from "@angular/fire/auth";
 import { Subscription } from "rxjs";
 import { FirestoreService } from "../firestore/firestore.service";
-import { collection, Firestore } from "@angular/fire/firestore";
+import { ExerciseService } from "../exercise/exercise.service";
+
+type LoginState = {
+  isLoggedIn: boolean;
+  userID: string | null;
+};
 
 @Injectable({
   providedIn: "root",
@@ -17,20 +22,28 @@ import { collection, Firestore } from "@angular/fire/firestore";
 export class FirebaseAuthService {
   private auth: Auth = inject(Auth);
   private googleAuthProvider = new GoogleAuthProvider();
-  isLoggedIn = signal(false);
+  loginState = signal<LoginState>({
+    isLoggedIn: false,
+    userID: null,
+  });
   firestoreService = inject(FirestoreService);
   authState$ = authState(this.auth);
   authStateSubscription: Subscription;
-
   constructor() {
     this.authStateSubscription = this.authState$.subscribe(
       (aUser: User | null) => {
         //handle auth state changes here. Note, that user will be null if there is no currently logged in user.
         if (aUser !== null) {
           this.saveUserDataIntoDocument(aUser);
-          this.isLoggedIn.set(true);
+          this.loginState.set({
+            isLoggedIn: true,
+            userID: aUser.uid,
+          });
         } else {
-          this.isLoggedIn.set(false);
+          this.loginState.set({
+            isLoggedIn: false,
+            userID: null,
+          });
         }
       },
     );
@@ -41,10 +54,7 @@ export class FirebaseAuthService {
     this.authStateSubscription.unsubscribe();
   }
   async loginUsingGoogle() {
-    const userCredential = await signInWithPopup(
-      this.auth,
-      this.googleAuthProvider,
-    );
+    await signInWithPopup(this.auth, this.googleAuthProvider);
   }
   saveUserDataIntoDocument(user: User) {
     // Save user data to Firestore

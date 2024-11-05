@@ -18,7 +18,7 @@ export class SidebarComponent {
   ];
 
   authButtonOnClick() {
-    if (this.firebaseAuthService.isLoggedIn()) {
+    if (this.firebaseAuthService.loginState().isLoggedIn) {
       this.firebaseAuthService.logoutUsingGoogle();
     } else {
       this.firebaseAuthService.loginUsingGoogle();
