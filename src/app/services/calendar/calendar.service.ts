@@ -112,6 +112,11 @@ export class CalendarService {
     this.calendarState.set({ year, month, day });
   }
 
+  async addExerciseToDay(data: DayData) {
+    const dayDataCollection = this.dayDataCollectionRef();
+    if (!dayDataCollection) return;
+  }
+
   async loadInMonthlyDayData() {
     const dayDataCollection = this.dayDataCollectionRef();
     if (!dayDataCollection) return;

@@ -13,6 +13,8 @@ import { HlmSelectImports } from "@spartan-ng/ui-select-helm";
 import { ExerciseService } from "../../services/exercise/exercise.service";
 import { Router } from "@angular/router";
 import { HlmSpinnerComponent } from "@spartan-ng/ui-spinner-helm";
+import { HlmIconModule, provideIcons } from "@spartan-ng/ui-icon-helm";
+import { lucidePlusCircle } from "@ng-icons/lucide";
 
 @Component({
   selector: "app-exercise-creator",
@@ -23,9 +25,11 @@ import { HlmSpinnerComponent } from "@spartan-ng/ui-spinner-helm";
     HlmInputDirective,
     HlmLabelDirective,
     HlmButtonDirective,
+    HlmIconModule,
     ReactiveFormsModule,
     HlmSpinnerComponent,
   ],
+  providers: [provideIcons({ lucidePlusCircle })],
   templateUrl: "./exercise-creator.component.html",
 })
 export class ExerciseCreatorComponent {

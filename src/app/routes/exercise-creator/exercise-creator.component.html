@@ -59,11 +59,11 @@
   @if (doesDuplicateExerciseExist()) {
     <p class="text-sm text-red-500">This exercise has already been added!</p>
   }
-  <button type="submit" hlmBtn>
+  <button class="flex gap-2" type="submit" hlmBtn>
     @if (isLoading()) {
       <hlm-spinner size="sm" />
     } @else {
-      Create Exercise
+      Create Exercise <hlm-icon size="sm" name="lucidePlusCircle" />
     }
   </button>
 </form>

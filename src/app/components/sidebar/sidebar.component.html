@@ -16,11 +16,13 @@
       </li>
     }
   </ul>
-  <button class="mt-auto" (click)="authButtonOnClick()" hlmBtn>
+  <button class="mt-auto flex gap-2" (click)="authButtonOnClick()" hlmBtn>
     @if (firebaseAuthStateService.loginState().isLoggedIn) {
-      Log Out
+      <hlm-icon name="lucideLogOut" size="sm" />
+      <p>Log Out</p>
     } @else {
-      Login using Google
+      <hlm-icon name="lucideLogIn" size="sm" />
+      <p>Login using Google</p>
     }
   </button>
 </aside>

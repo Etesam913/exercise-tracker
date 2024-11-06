@@ -10,7 +10,7 @@ import {
   ViewChild,
 } from "@angular/core";
 import { CalendarService } from "../../services/calendar/calendar.service";
-import { fromEvent, Subject, takeUntil } from "rxjs";
+import { fromEvent, map, merge, Subject, takeUntil } from "rxjs";
 
 @Component({
   selector: "app-calendar-day-square",
@@ -48,14 +48,33 @@ export class CalendarDaySquareComponent implements AfterViewInit, OnDestroy {
         }
       });
 
-    fromEvent(this.daySquare.nativeElement, "dragleave")
+    const dragLeave$ = fromEvent(
+      this.daySquare.nativeElement,
+      "dragleave",
+    ).pipe(map(() => "dragleave"));
+
+    const drop$ = fromEvent(this.daySquare.nativeElement, "drop").pipe(
+      map(() => "drop"),
+    );
+
+    merge(dragLeave$, drop$)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(() => {
-        this.dragEnterCount -= 1;
-        if (this.dragEnterCount === 0) {
-          this.isDragOver.set(false);
+      .subscribe((eventName) => {
+        if (eventName === "dragleave" || eventName === "drop") {
+          this.dragEnterCount -= 1;
+          if (this.dragEnterCount === 0) {
+            this.isDragOver.set(false);
+          }
+        }
+
+        if (eventName === "drop") {
+          console.log("dropped");
         }
       });
+
+    fromEvent(this.daySquare.nativeElement, "dragover")
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((e) => e.preventDefault());
   }
 
   ngOnDestroy(): void {
