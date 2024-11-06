@@ -10,7 +10,7 @@ import {
   ViewChild,
 } from "@angular/core";
 import { CalendarService } from "../../services/calendar/calendar.service";
-import { fromEvent, Subject, takeUntil, throttleTime } from "rxjs";
+import { fromEvent, Subject, takeUntil } from "rxjs";
 
 @Component({
   selector: "app-calendar-day-square",
@@ -26,6 +26,14 @@ export class CalendarDaySquareComponent implements AfterViewInit, OnDestroy {
   isActive = computed(
     () => this.calendarService.calendarState().day === this.dayNum,
   );
+  // Using the dayDataMap to get all exercises for the inputted day
+  exercisesForCurrentDay = computed(() => {
+    const mapKey = `${this.calendarService.getYear()}-${this.calendarService.getMonth() + 1}-${this.dayNum}`;
+    if (this.calendarService.dayDataMap().has(mapKey)) {
+      return this.calendarService.dayDataMap().get(mapKey)!;
+    }
+    return [];
+  });
   isDragOver = signal(false);
   private dragEnterCount = 0;
 
@@ -33,6 +41,7 @@ export class CalendarDaySquareComponent implements AfterViewInit, OnDestroy {
     fromEvent(this.daySquare.nativeElement, "dragenter")
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((e) => {
+        e.preventDefault();
         this.dragEnterCount += 1;
         if (this.dragEnterCount === 1) {
           this.isDragOver.set(true);
@@ -53,13 +62,4 @@ export class CalendarDaySquareComponent implements AfterViewInit, OnDestroy {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
-
-  // Using the dayDataMap to get all exercises for the inputted day
-  exercisesForCurrentDay = computed(() => {
-    const mapKey = `${this.calendarService.getYear()}-${this.calendarService.getMonth() + 1}-${this.dayNum}`;
-    if (this.calendarService.dayDataMap().has(mapKey)) {
-      return this.calendarService.dayDataMap().get(mapKey)!;
-    }
-    return [];
-  });
 }

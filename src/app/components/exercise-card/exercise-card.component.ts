@@ -5,7 +5,6 @@ import {
   inject,
   Input,
   OnDestroy,
-  OnInit,
   signal,
   ViewChild,
 } from "@angular/core";
@@ -38,7 +37,7 @@ import { HlmLabelDirective } from "@spartan-ng/ui-label-helm";
 import { HlmInputDirective } from "@spartan-ng/ui-input-helm";
 import { HlmIconComponent, provideIcons } from "@spartan-ng/ui-icon-helm";
 import { lucideTrash2 } from "@ng-icons/lucide";
-import { fromEvent, map, Subject, takeUntil } from "rxjs";
+import { fromEvent, Subject, takeUntil } from "rxjs";
 
 @Component({
   selector: "app-exercise-card",

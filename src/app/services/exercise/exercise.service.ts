@@ -37,11 +37,16 @@ export class ExerciseService {
   private authService = inject(FirebaseAuthService);
 
   constructor() {
-    effect(() => {
-      if (this.authService.loginState().isLoggedIn) {
-        this.loadInExercises();
-      }
-    });
+    effect(
+      () => {
+        if (this.authService.loginState().isLoggedIn) {
+          this.loadInExercises();
+        } else {
+          this.exercises.set([]);
+        }
+      },
+      { allowSignalWrites: true },
+    );
   }
 
   async removeExercise(exerciseId: string) {
