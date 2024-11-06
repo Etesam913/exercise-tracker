@@ -6,7 +6,8 @@ import {
   Firestore,
   collection,
 } from "@angular/fire/firestore";
-import { FirebaseAuthService } from "../firebase-auth/firebase-auth.service";
+import { FirebaseAuthActionsService } from "../firebase-auth/firebase-auth.service";
+import { FirebaseAuthStateService } from "../firebase-auth-actions/firebase-auth-state.service";
 
 export type Exercise = {
   id: string;
@@ -20,34 +21,20 @@ export type Exercise = {
   providedIn: "root",
 })
 export class ExerciseService {
+  private authStateService = inject(FirebaseAuthStateService);
   private exerciseCollectionRef = computed(() => {
-    if (!this.authService.loginState().userID) {
+    if (!this.authStateService.loginState().userID) {
       return null;
     }
     return collection(
       this.firestore,
-      `users/${this.authService.loginState().userID}/exercises`,
+      `users/${this.authStateService.loginState().userID}/exercises`,
     );
   });
 
   exercises = signal<Exercise[]>([]);
-
   private firestoreService = inject(FirestoreService);
   private firestore: Firestore = inject(Firestore);
-  private authService = inject(FirebaseAuthService);
-
-  constructor() {
-    effect(
-      () => {
-        if (this.authService.loginState().isLoggedIn) {
-          this.loadInExercises();
-        } else {
-          this.exercises.set([]);
-        }
-      },
-      { allowSignalWrites: true },
-    );
-  }
 
   async removeExercise(exerciseId: string) {
     await this.firestoreService.deleteDocument("exercises", exerciseId);
@@ -83,7 +70,7 @@ export class ExerciseService {
     return true;
   }
 
-  private async loadInExercises() {
+  async loadInExercises() {
     const exerciseCollection = this.exerciseCollectionRef();
     if (!exerciseCollection) return;
     const exercisesFromFirestore = (await this.firestoreService.getData(

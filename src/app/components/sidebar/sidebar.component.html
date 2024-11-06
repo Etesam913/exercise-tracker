@@ -17,7 +17,7 @@
     }
   </ul>
   <button class="mt-auto" (click)="authButtonOnClick()" hlmBtn>
-    @if (firebaseAuthService.loginState().isLoggedIn) {
+    @if (firebaseAuthStateService.loginState().isLoggedIn) {
       Log Out
     } @else {
       Login using Google

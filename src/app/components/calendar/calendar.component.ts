@@ -5,7 +5,7 @@ import { HlmButtonDirective } from "@spartan-ng/ui-button-helm";
 import { ExerciseCardComponent } from "../exercise-card/exercise-card.component";
 import { HlmIconComponent, provideIcons } from "@spartan-ng/ui-icon-helm";
 import { lucideChevronLeft, lucideChevronRight } from "@ng-icons/lucide";
-import { FirebaseAuthService } from "../../services/firebase-auth/firebase-auth.service";
+import { FirebaseAuthActionsService } from "../../services/firebase-auth/firebase-auth.service";
 
 @Component({
   selector: "app-calendar",
@@ -21,7 +21,7 @@ import { FirebaseAuthService } from "../../services/firebase-auth/firebase-auth.
 })
 export class CalendarComponent {
   calendarService = inject(CalendarService);
-  private authService = inject(FirebaseAuthService);
+  private authService = inject(FirebaseAuthActionsService);
   daysInMonthArr: number[] = [];
   private previousMonth: number | null = null;
   private previousYear: number | null = null;

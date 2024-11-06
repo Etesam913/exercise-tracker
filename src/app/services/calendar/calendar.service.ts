@@ -2,7 +2,7 @@ import { computed, inject, Injectable, signal } from "@angular/core";
 import { FirestoreService } from "../firestore/firestore.service";
 import { collection, Firestore, query, where } from "@angular/fire/firestore";
 import { Exercise } from "../exercise/exercise.service";
-import { FirebaseAuthService } from "../firebase-auth/firebase-auth.service";
+import { FirebaseAuthStateService } from "../firebase-auth-actions/firebase-auth-state.service";
 
 type CalendarData = {
   year: number;
@@ -30,11 +30,11 @@ export class CalendarService {
     day: new Date().getDate(),
   });
   dayDataMap = signal<Map<string, Exercise[]>>(new Map());
-  private firebaseAuthService = inject(FirebaseAuthService);
+  private firebaseAuthStateService = inject(FirebaseAuthStateService);
   private firestoreService = inject(FirestoreService);
   private firestore: Firestore = inject(Firestore);
   dayDataCollectionRef = computed(() => {
-    const { isLoggedIn, userID } = this.firebaseAuthService.loginState();
+    const { isLoggedIn, userID } = this.firebaseAuthStateService.loginState();
     if (isLoggedIn) {
       return collection(this.firestore, `users/${userID}/dayData`);
     }

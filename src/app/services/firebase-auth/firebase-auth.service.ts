@@ -10,40 +10,34 @@ import {
 import { Subscription } from "rxjs";
 import { FirestoreService } from "../firestore/firestore.service";
 import { ExerciseService } from "../exercise/exercise.service";
-
-type LoginState = {
-  isLoggedIn: boolean;
-  userID: string | null;
-};
+import { FirebaseAuthStateService } from "../firebase-auth-actions/firebase-auth-state.service";
 
 @Injectable({
   providedIn: "root",
 })
-export class FirebaseAuthService {
-  private auth: Auth = inject(Auth);
+export class FirebaseAuthActionsService {
   private googleAuthProvider = new GoogleAuthProvider();
-  loginState = signal<LoginState>({
-    isLoggedIn: false,
-    userID: null,
-  });
   firestoreService = inject(FirestoreService);
-  authState$ = authState(this.auth);
   authStateSubscription: Subscription;
+  private authStateService = inject(FirebaseAuthStateService);
+  private exerciseService = inject(ExerciseService);
   constructor() {
-    this.authStateSubscription = this.authState$.subscribe(
+    this.authStateSubscription = this.authStateService.authState$.subscribe(
       (aUser: User | null) => {
         //handle auth state changes here. Note, that user will be null if there is no currently logged in user.
         if (aUser !== null) {
           this.saveUserDataIntoDocument(aUser);
-          this.loginState.set({
+          this.authStateService.loginState.set({
             isLoggedIn: true,
             userID: aUser.uid,
           });
+          this.exerciseService.loadInExercises();
         } else {
-          this.loginState.set({
+          this.authStateService.loginState.set({
             isLoggedIn: false,
             userID: null,
           });
+          this.exerciseService.exercises.set([]);
         }
       },
     );
@@ -54,7 +48,7 @@ export class FirebaseAuthService {
     this.authStateSubscription.unsubscribe();
   }
   async loginUsingGoogle() {
-    await signInWithPopup(this.auth, this.googleAuthProvider);
+    await signInWithPopup(this.authStateService.auth, this.googleAuthProvider);
   }
   saveUserDataIntoDocument(user: User) {
     // Save user data to Firestore
@@ -70,6 +64,6 @@ export class FirebaseAuthService {
     this.firestoreService.setDocument(`users`, user.uid, userData);
   }
   async logoutUsingGoogle() {
-    await signOut(this.auth);
+    await signOut(this.authStateService.auth);
   }
 }

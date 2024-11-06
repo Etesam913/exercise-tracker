@@ -1,7 +1,8 @@
 import { Component, inject } from "@angular/core";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 import { HlmButtonDirective } from "@spartan-ng/ui-button-helm";
-import { FirebaseAuthService } from "../../services/firebase-auth/firebase-auth.service";
+import { FirebaseAuthStateService } from "../../services/firebase-auth-actions/firebase-auth-state.service";
+import { FirebaseAuthActionsService } from "../../services/firebase-auth/firebase-auth.service";
 
 @Component({
   selector: "app-sidebar",
@@ -11,17 +12,18 @@ import { FirebaseAuthService } from "../../services/firebase-auth/firebase-auth.
 })
 export class SidebarComponent {
   currentPath = "";
-  firebaseAuthService = inject(FirebaseAuthService);
+  private firebaseAuthActionsService = inject(FirebaseAuthActionsService);
+  firebaseAuthStateService = inject(FirebaseAuthStateService);
   sidebarRoutes = [
     { path: "/", name: "Home" },
     { path: "/exercise-creator", name: "Exercise Creator" },
   ];
 
   authButtonOnClick() {
-    if (this.firebaseAuthService.loginState().isLoggedIn) {
-      this.firebaseAuthService.logoutUsingGoogle();
+    if (this.firebaseAuthStateService.loginState().isLoggedIn) {
+      this.firebaseAuthActionsService.logoutUsingGoogle();
     } else {
-      this.firebaseAuthService.loginUsingGoogle();
+      this.firebaseAuthActionsService.loginUsingGoogle();
     }
   }
 }
