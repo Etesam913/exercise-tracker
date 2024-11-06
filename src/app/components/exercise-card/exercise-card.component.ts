@@ -90,7 +90,7 @@ export class ExerciseCardComponent implements AfterViewInit, OnDestroy {
     const eventTarget = event.target as HTMLLIElement;
     if (!event.dataTransfer || !eventTarget.id) return;
 
-    event.dataTransfer.setData("text/plain", eventTarget.id);
+    event.dataTransfer.setData("text/plain", JSON.stringify(this.exercise));
 
     // Create and append the drag image to the DOM
     const dragImage = document.createElement("div");

@@ -11,6 +11,7 @@ import {
 } from "@angular/core";
 import { CalendarService } from "../../services/calendar/calendar.service";
 import { fromEvent, map, merge, Subject, takeUntil } from "rxjs";
+import { Exercise } from "../../services/exercise/exercise.service";
 
 @Component({
   selector: "app-calendar-day-square",
@@ -51,15 +52,23 @@ export class CalendarDaySquareComponent implements AfterViewInit, OnDestroy {
     const dragLeave$ = fromEvent(
       this.daySquare.nativeElement,
       "dragleave",
-    ).pipe(map(() => "dragleave"));
+    ).pipe(
+      map((e) => ({
+        eventName: "dragleave",
+        e,
+      })),
+    );
 
     const drop$ = fromEvent(this.daySquare.nativeElement, "drop").pipe(
-      map(() => "drop"),
+      map((e) => ({
+        eventName: "drop",
+        e,
+      })),
     );
 
     merge(dragLeave$, drop$)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((eventName) => {
+      .subscribe(async ({ eventName, e }) => {
         if (eventName === "dragleave" || eventName === "drop") {
           this.dragEnterCount -= 1;
           if (this.dragEnterCount === 0) {
@@ -68,7 +77,18 @@ export class CalendarDaySquareComponent implements AfterViewInit, OnDestroy {
         }
 
         if (eventName === "drop") {
-          console.log("dropped");
+          const data = (e as DragEvent).dataTransfer;
+          if (!data) return;
+          const { month, year } = this.calendarService.calendarState();
+          const newExercise: Exercise = JSON.parse(data.getData("text/plain"));
+          const newExercises = [...this.exercisesForCurrentDay(), newExercise];
+          await this.calendarService.setDayDataForDay({
+            exerciseData: newExercises,
+            day: this.dayNum,
+            month: month + 1,
+            year,
+            id: crypto.randomUUID(),
+          });
         }
       });
 

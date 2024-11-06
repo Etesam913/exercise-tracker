@@ -112,9 +112,14 @@ export class CalendarService {
     this.calendarState.set({ year, month, day });
   }
 
-  async addExerciseToDay(data: DayData) {
+  async setDayDataForDay(dayData: DayData) {
     const dayDataCollection = this.dayDataCollectionRef();
     if (!dayDataCollection) return;
+    await this.firestoreService.setDocument(
+      `users/${this.firebaseAuthStateService.loginState().userID}/dayData`,
+      `${dayData.year}-${dayData.month}-${dayData.day}`,
+      dayData,
+    );
   }
 
   async loadInMonthlyDayData() {
