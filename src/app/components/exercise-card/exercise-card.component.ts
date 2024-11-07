@@ -38,6 +38,7 @@ import { HlmInputDirective } from "@spartan-ng/ui-input-helm";
 import { HlmIconComponent, provideIcons } from "@spartan-ng/ui-icon-helm";
 import { lucideTrash2 } from "@ng-icons/lucide";
 import { fromEvent, Subject, takeUntil } from "rxjs";
+import { CalendarExerciseCardComponent } from "../../calendar-exercise-card/calendar-exercise-card.component";
 
 @Component({
   selector: "app-exercise-card",
@@ -61,6 +62,7 @@ import { fromEvent, Subject, takeUntil } from "rxjs";
     HlmLabelDirective,
     HlmInputDirective,
     HlmIconComponent,
+    CalendarExerciseCardComponent,
   ],
   providers: [provideIcons({ lucideTrash2 })],
   templateUrl: "./exercise-card.component.html",
@@ -69,7 +71,6 @@ export class ExerciseCardComponent implements AfterViewInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   @ViewChild("dragCard") card!: ElementRef<HTMLLIElement>;
   @Input() exercise!: Exercise;
-  @Input() isInCalendar!: boolean;
   exerciseService = inject(ExerciseService);
   isLoading = signal(false);
 

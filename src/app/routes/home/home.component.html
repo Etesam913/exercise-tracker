@@ -6,7 +6,7 @@
         exercise of exerciseService.exercises();
         track exercise.exerciseType + "-" + $index
       ) {
-        <app-exercise-card [isInCalendar]="false" [exercise]="exercise" />
+        <app-exercise-card [exercise]="exercise" />
       } @empty {
         <li class="mt-3">
           You have no exercises. Navigate to the exercise creator to create an

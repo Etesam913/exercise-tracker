@@ -115,11 +115,19 @@ export class CalendarService {
   async setDayDataForDay(dayData: DayData) {
     const dayDataCollection = this.dayDataCollectionRef();
     if (!dayDataCollection) return;
+    const dayDataMapKey = `${dayData.year}-${dayData.month}-${dayData.day}`;
+
     await this.firestoreService.setDocument(
       `users/${this.firebaseAuthStateService.loginState().userID}/dayData`,
-      `${dayData.year}-${dayData.month}-${dayData.day}`,
+      dayDataMapKey,
       dayData,
     );
+
+    this.dayDataMap.update((prevDayDataMap) => {
+      const newDayDataMap = new Map(prevDayDataMap);
+      newDayDataMap.set(dayDataMapKey, dayData.exerciseData);
+      return newDayDataMap;
+    });
   }
 
   async loadInMonthlyDayData() {

@@ -6,6 +6,7 @@ import { ExerciseCardComponent } from "../exercise-card/exercise-card.component"
 import { HlmIconComponent, provideIcons } from "@spartan-ng/ui-icon-helm";
 import { lucideChevronLeft, lucideChevronRight } from "@ng-icons/lucide";
 import { FirebaseAuthActionsService } from "../../services/firebase-auth/firebase-auth.service";
+import { CalendarExerciseCardComponent } from "../../calendar-exercise-card/calendar-exercise-card.component";
 
 @Component({
   selector: "app-calendar",
@@ -13,7 +14,7 @@ import { FirebaseAuthActionsService } from "../../services/firebase-auth/firebas
   imports: [
     CalendarDaySquareComponent,
     HlmButtonDirective,
-    ExerciseCardComponent,
+    CalendarExerciseCardComponent,
     HlmIconComponent,
   ],
   providers: [provideIcons({ lucideChevronLeft, lucideChevronRight })],

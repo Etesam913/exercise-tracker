@@ -90,13 +90,6 @@ export class CalendarDaySquareComponent implements AfterViewInit, OnDestroy {
             year,
             id: crypto.randomUUID(),
           });
-
-          // Update the dayDataMap signal state
-          this.calendarService.dayDataMap.update((prevDayDataMap) => {
-            const newDayDataMap = new Map(prevDayDataMap);
-            newDayDataMap.set(dayDataMapKey, newExercises);
-            return newDayDataMap;
-          });
         }
       });
 

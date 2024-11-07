@@ -37,7 +37,7 @@
     </h3>
     <ul>
       @for (exercise of exercisesForActiveDay(); track exercise.id) {
-        <app-exercise-card [exercise]="exercise" [isInCalendar]="true" />
+        <app-calendar-exercise-card [exercise]="exercise" />
       } @empty {
         <li>
           There are no exercises set for this day. Drag an exercise on the
