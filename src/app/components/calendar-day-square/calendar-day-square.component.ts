@@ -82,12 +82,20 @@ export class CalendarDaySquareComponent implements AfterViewInit, OnDestroy {
           const { month, year } = this.calendarService.calendarState();
           const newExercise: Exercise = JSON.parse(data.getData("text/plain"));
           const newExercises = [...this.exercisesForCurrentDay(), newExercise];
+          const dayDataMapKey = `${year}-${month + 1}-${this.dayNum}`;
           await this.calendarService.setDayDataForDay({
             exerciseData: newExercises,
             day: this.dayNum,
             month: month + 1,
             year,
             id: crypto.randomUUID(),
+          });
+
+          // Update the dayDataMap signal state
+          this.calendarService.dayDataMap.update((prevDayDataMap) => {
+            const newDayDataMap = new Map(prevDayDataMap);
+            newDayDataMap.set(dayDataMapKey, newExercises);
+            return newDayDataMap;
           });
         }
       });

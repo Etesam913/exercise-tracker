@@ -21,6 +21,7 @@ export class FirebaseAuthActionsService {
   authStateSubscription: Subscription;
   private authStateService = inject(FirebaseAuthStateService);
   private exerciseService = inject(ExerciseService);
+
   constructor() {
     this.authStateSubscription = this.authStateService.authState$.subscribe(
       (aUser: User | null) => {
@@ -47,6 +48,7 @@ export class FirebaseAuthActionsService {
     // when manually subscribing to an observable remember to unsubscribe in ngOnDestroy
     this.authStateSubscription.unsubscribe();
   }
+
   async loginUsingGoogle() {
     await signInWithPopup(this.authStateService.auth, this.googleAuthProvider);
   }
