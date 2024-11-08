@@ -72,7 +72,7 @@ export class CalendarExerciseCardComponent {
   async deleteExercise() {
     const newExercises = { ...this.exercisesForActiveDay() };
     delete newExercises[this.exercise.id];
-
+    console.log(newExercises);
     const dayDataMapKey = `${this.calendarService.getYear()}-${this.calendarService.getMonth() + 1}-${this.calendarService.getDay()}`;
 
     if (Object.keys(newExercises).length === 0) {

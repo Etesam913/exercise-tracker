@@ -1,6 +1,17 @@
 import { computed, inject, Injectable, signal } from "@angular/core";
 import { FirestoreService } from "../firestore/firestore.service";
-import { collection, Firestore, query, where } from "@angular/fire/firestore";
+import {
+  collection,
+  doc,
+  Firestore,
+  query,
+  where,
+  writeBatch,
+  arrayRemove,
+  updateDoc,
+  FieldValue,
+  deleteField,
+} from "@angular/fire/firestore";
 import { Exercise } from "../exercise/exercise.service";
 import { FirebaseAuthStateService } from "../firebase-auth-actions/firebase-auth-state.service";
 
@@ -112,15 +123,73 @@ export class CalendarService {
     this.calendarState.set({ year, month, day });
   }
 
+  async getDayDataDocumentsForExerciseId(exerciseId: string) {
+    const dayDataCollection = this.dayDataCollectionRef();
+    if (!dayDataCollection) return [];
+    const dayDataFromFirestore = (await this.firestoreService.getData(
+      query(
+        dayDataCollection,
+        where("exerciseIds", "array-contains", exerciseId),
+      ),
+    )) as DayData[];
+    return dayDataFromFirestore;
+  }
+
+  async deleteDayDataDocumentsByExerciseId(
+    docData: DayData[],
+    exerciseId: string,
+  ) {
+    const batch = writeBatch(this.firestore);
+    docData.forEach(({ id, exerciseData }) => {
+      const docRef = doc(
+        this.firestore,
+        `users/${this.firebaseAuthStateService.loginState().userID}/dayData`,
+        id,
+      );
+
+      // You are deleting the only exercise for this day, so you can delete the whole dayData document
+      if (Object.keys(exerciseData).length === 1) {
+        batch.delete(docRef);
+        this.dayDataMap.update((prevDayDataMap) => {
+          const newDayDataMap = new Map(prevDayDataMap);
+          newDayDataMap.delete(id);
+          return newDayDataMap;
+        });
+        return;
+      }
+
+      // Update the dayData signal so that the ui is reflected
+      this.dayDataMap.update((prevDayDataMap) => {
+        const newDayDataMap = new Map(prevDayDataMap);
+        const exerciseDataForNewMap = newDayDataMap.get(id);
+        if (exerciseDataForNewMap) {
+          delete exerciseDataForNewMap[exerciseId];
+          newDayDataMap.set(id, exerciseDataForNewMap);
+        }
+        return newDayDataMap;
+      });
+      batch.update(docRef, {
+        exerciseIds: arrayRemove(exerciseId),
+        [`exerciseData.${exerciseId}`]: deleteField(),
+      });
+    });
+    await batch.commit();
+  }
+
   async setDayDataForDay(dayData: DayData) {
     const dayDataCollection = this.dayDataCollectionRef();
     if (!dayDataCollection) return;
     const dayDataMapKey = `${dayData.year}-${dayData.month}-${dayData.day}`;
+    const dayDataWithExerciseIds = {
+      ...dayData,
+      exerciseIds: Object.keys(dayData.exerciseData),
+    };
 
     await this.firestoreService.setDocument(
       `users/${this.firebaseAuthStateService.loginState().userID}/dayData`,
       dayDataMapKey,
-      dayData,
+      dayDataWithExerciseIds,
+      { merge: false },
     );
 
     this.dayDataMap.update((prevDayDataMap) => {

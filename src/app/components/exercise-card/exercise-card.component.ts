@@ -39,6 +39,10 @@ import { HlmIconComponent, provideIcons } from "@spartan-ng/ui-icon-helm";
 import { lucideTrash2 } from "@ng-icons/lucide";
 import { fromEvent, Subject, takeUntil } from "rxjs";
 import { CalendarExerciseCardComponent } from "../../calendar-exercise-card/calendar-exercise-card.component";
+import {
+  CalendarService,
+  DayData,
+} from "../../services/calendar/calendar.service";
 
 @Component({
   selector: "app-exercise-card",
@@ -73,6 +77,8 @@ export class ExerciseCardComponent implements AfterViewInit, OnDestroy {
   @Input() exercise!: Exercise;
   exerciseService = inject(ExerciseService);
   isLoading = signal(false);
+  documentsForExerciseId = signal<DayData[]>([]);
+  private calendarService = inject(CalendarService);
 
   ngAfterViewInit(): void {
     if (this.card.nativeElement) {
@@ -85,6 +91,15 @@ export class ExerciseCardComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  async onTrashClick() {
+    this.documentsForExerciseId.set([]);
+    const documentData =
+      await this.calendarService.getDayDataDocumentsForExerciseId(
+        this.exercise.id,
+      );
+    this.documentsForExerciseId.set(documentData);
   }
 
   onDragStart(event: DragEvent) {
@@ -113,6 +128,10 @@ export class ExerciseCardComponent implements AfterViewInit, OnDestroy {
 
   async removeExercise(exerciseId: string) {
     this.isLoading.set(true);
+    await this.calendarService.deleteDayDataDocumentsByExerciseId(
+      this.documentsForExerciseId(),
+      exerciseId,
+    );
     await this.exerciseService.removeExercise(exerciseId);
     this.isLoading.set(false);
   }

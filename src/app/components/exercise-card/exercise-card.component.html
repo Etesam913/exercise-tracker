@@ -20,6 +20,7 @@
         variant="outline"
         class="absolute top-2 right-2 px-2.5"
         hlmBtn
+        (click)="onTrashClick()"
       >
         <hlm-icon size="sm" strokeWidth="2.5px" name="lucideTrash2" />
       </button>
@@ -29,10 +30,16 @@
         <h3 hlmDialogTitle>
           Are you sure that you want to delete this exercise?
         </h3>
-        <p hlmDialogDescription>
-          Deleting this the below exercise will remove 30 events from the
-          calendar!
-        </p>
+
+        @if (documentsForExerciseId().length > 0) {
+          <p hlmDialogDescription>
+            Deleting this the below exercise will remove
+            {{ documentsForExerciseId().length }}
+            {{ documentsForExerciseId().length > 1 ? "events" : "event" }} from
+            the calendar!
+          </p>
+        }
+
         <ul>
           <app-calendar-exercise-card
             [showDeleteButton]="false"

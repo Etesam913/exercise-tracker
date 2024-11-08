@@ -4,11 +4,13 @@ import {
   getDocs,
   addDoc,
   deleteDoc,
+  writeBatch,
   setDoc,
   CollectionReference,
   Query,
   doc,
   Firestore,
+  SetOptions,
 } from "@angular/fire/firestore";
 
 @Injectable({
@@ -64,8 +66,9 @@ export class FirestoreService {
     collectionName: string,
     docId: string,
     data: Record<string, any>,
+    options?: SetOptions,
   ) {
     const docRef = doc(this.firestore, collectionName, docId);
-    return await setDoc(docRef, data, { merge: true });
+    return await setDoc(docRef, data, options ? options : { merge: true });
   }
 }

@@ -1,12 +1,6 @@
-import { computed, effect, inject, Injectable, signal } from "@angular/core";
+import { computed, inject, Injectable, signal } from "@angular/core";
 import { FirestoreService } from "../firestore/firestore.service";
-import {
-  CollectionReference,
-  DocumentData,
-  Firestore,
-  collection,
-} from "@angular/fire/firestore";
-import { FirebaseAuthActionsService } from "../firebase-auth/firebase-auth.service";
+import { Firestore, collection } from "@angular/fire/firestore";
 import { FirebaseAuthStateService } from "../firebase-auth-actions/firebase-auth-state.service";
 
 export type Exercise = {
@@ -37,7 +31,10 @@ export class ExerciseService {
   private firestore: Firestore = inject(Firestore);
 
   async removeExercise(exerciseId: string) {
-    await this.firestoreService.deleteDocument("exercises", exerciseId);
+    await this.firestoreService.deleteDocument(
+      `users/${this.authStateService.loginState().userID}/exercises`,
+      exerciseId,
+    );
     this.exercises.update((prevExercises) =>
       prevExercises.filter(({ id }) => id !== exerciseId),
     );
