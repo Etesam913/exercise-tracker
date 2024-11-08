@@ -36,8 +36,11 @@
       {{ this.calendarService.getDay() }}
     </h3>
     <ul>
-      @for (exercise of exercisesForActiveDay(); track exercise.id) {
-        <app-calendar-exercise-card [exercise]="exercise" />
+      @for (
+        exercise of exercisesForActiveDay() | keyvalue;
+        track exercise.key
+      ) {
+        <app-calendar-exercise-card [exercise]="exercise.value" />
       } @empty {
         <li>
           There are no exercises set for this day. Drag an exercise on the

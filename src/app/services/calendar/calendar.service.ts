@@ -15,7 +15,7 @@ export type DayData = {
   day: number;
   month: number;
   year: number;
-  exerciseData: Exercise[];
+  exerciseData: Record<string, Exercise>;
 };
 
 type DayDataSignalRecord = Record<string, DayData>;
@@ -29,7 +29,7 @@ export class CalendarService {
     month: new Date().getMonth(),
     day: new Date().getDate(),
   });
-  dayDataMap = signal<Map<string, Exercise[]>>(new Map());
+  dayDataMap = signal<Map<string, Record<string, Exercise>>>(new Map());
   private firebaseAuthStateService = inject(FirebaseAuthStateService);
   private firestoreService = inject(FirestoreService);
   private firestore: Firestore = inject(Firestore);
@@ -147,7 +147,7 @@ export class CalendarService {
           accMap.set(mapKey, dayDataObj.exerciseData);
           return accMap;
         },
-        new Map<string, Exercise[]>(),
+        new Map<string, Record<string, Exercise>>(),
       );
       this.dayDataMap.set(newDayDataMap);
     }

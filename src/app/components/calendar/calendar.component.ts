@@ -2,11 +2,10 @@ import { Component, inject, effect, computed } from "@angular/core";
 import { CalendarService } from "../../services/calendar/calendar.service";
 import { CalendarDaySquareComponent } from "../calendar-day-square/calendar-day-square.component";
 import { HlmButtonDirective } from "@spartan-ng/ui-button-helm";
-import { ExerciseCardComponent } from "../exercise-card/exercise-card.component";
 import { HlmIconComponent, provideIcons } from "@spartan-ng/ui-icon-helm";
 import { lucideChevronLeft, lucideChevronRight } from "@ng-icons/lucide";
-import { FirebaseAuthActionsService } from "../../services/firebase-auth/firebase-auth.service";
 import { CalendarExerciseCardComponent } from "../../calendar-exercise-card/calendar-exercise-card.component";
+import { KeyValuePipe } from "@angular/common";
 
 @Component({
   selector: "app-calendar",
@@ -16,13 +15,13 @@ import { CalendarExerciseCardComponent } from "../../calendar-exercise-card/cale
     HlmButtonDirective,
     CalendarExerciseCardComponent,
     HlmIconComponent,
+    KeyValuePipe,
   ],
   providers: [provideIcons({ lucideChevronLeft, lucideChevronRight })],
   templateUrl: "./calendar.component.html",
 })
 export class CalendarComponent {
   calendarService = inject(CalendarService);
-  private authService = inject(FirebaseAuthActionsService);
   daysInMonthArr: number[] = [];
   private previousMonth: number | null = null;
   private previousYear: number | null = null;
@@ -32,7 +31,7 @@ export class CalendarComponent {
     if (this.calendarService.dayDataMap().has(mapKey)) {
       return this.calendarService.dayDataMap().get(mapKey)!;
     }
-    return [];
+    return {};
   });
 
   constructor() {

@@ -16,11 +16,11 @@
     {{ dayNum }}
   </p>
 
-  @for (exercise of exercisesForCurrentDay(); track exercise.id) {
+  @for (exercise of exercisesForCurrentDay() | keyvalue; track exercise.key) {
     <div
       class="bg-green-600 text-white py-0.5 px-2 w-full rounded-full text-xs overflow-hidden whitespace-nowrap text-ellipsis"
     >
-      {{ exercise.exerciseType }}
+      {{ exercise.value.exerciseType }}
     </div>
   }
 </button>

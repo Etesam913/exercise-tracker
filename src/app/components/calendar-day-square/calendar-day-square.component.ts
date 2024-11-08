@@ -12,11 +12,12 @@ import {
 import { CalendarService } from "../../services/calendar/calendar.service";
 import { fromEvent, map, merge, Subject, takeUntil } from "rxjs";
 import { Exercise } from "../../services/exercise/exercise.service";
+import { KeyValuePipe } from "@angular/common";
 
 @Component({
   selector: "app-calendar-day-square",
   standalone: true,
-  imports: [],
+  imports: [KeyValuePipe],
   templateUrl: "./calendar-day-square.component.html",
 })
 export class CalendarDaySquareComponent implements AfterViewInit, OnDestroy {
@@ -33,7 +34,7 @@ export class CalendarDaySquareComponent implements AfterViewInit, OnDestroy {
     if (this.calendarService.dayDataMap().has(mapKey)) {
       return this.calendarService.dayDataMap().get(mapKey)!;
     }
-    return [];
+    return {};
   });
   isDragOver = signal(false);
   private dragEnterCount = 0;
@@ -81,8 +82,8 @@ export class CalendarDaySquareComponent implements AfterViewInit, OnDestroy {
           if (!data) return;
           const { month, year } = this.calendarService.calendarState();
           const newExercise: Exercise = JSON.parse(data.getData("text/plain"));
-          const newExercises = [...this.exercisesForCurrentDay(), newExercise];
-          const dayDataMapKey = `${year}-${month + 1}-${this.dayNum}`;
+          const newExercises = { ...this.exercisesForCurrentDay() };
+          newExercises[newExercise.id] = newExercise;
           await this.calendarService.setDayDataForDay({
             exerciseData: newExercises,
             day: this.dayNum,

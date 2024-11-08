@@ -66,17 +66,16 @@ export class CalendarExerciseCardComponent {
     if (this.calendarService.dayDataMap().has(mapKey)) {
       return this.calendarService.dayDataMap().get(mapKey)!;
     }
-    return [];
+    return {};
   });
 
   async deleteExercise() {
-    const newExercises = this.exercisesForActiveDay().filter(
-      (exercise) => exercise.id !== this.exercise.id,
-    );
+    const newExercises = { ...this.exercisesForActiveDay() };
+    delete newExercises[this.exercise.id];
 
     const dayDataMapKey = `${this.calendarService.getYear()}-${this.calendarService.getMonth() + 1}-${this.calendarService.getDay()}`;
 
-    if (newExercises.length === 0) {
+    if (Object.keys(newExercises).length === 0) {
       await this.firestoreService.deleteDocument(
         `users/${this.authService.loginState().userID}/dayData`,
         dayDataMapKey,
