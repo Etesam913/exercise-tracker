@@ -11,6 +11,7 @@ import { Subscription } from "rxjs";
 import { FirestoreService } from "../firestore/firestore.service";
 import { ExerciseService } from "../exercise/exercise.service";
 import { FirebaseAuthStateService } from "../firebase-auth-actions/firebase-auth-state.service";
+import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: "root",
@@ -21,6 +22,7 @@ export class FirebaseAuthActionsService {
   authStateSubscription: Subscription;
   private authStateService = inject(FirebaseAuthStateService);
   private exerciseService = inject(ExerciseService);
+  private router = inject(Router);
 
   constructor() {
     this.authStateSubscription = this.authStateService.authState$.subscribe(
@@ -32,8 +34,10 @@ export class FirebaseAuthActionsService {
             isLoggedIn: true,
             userID: aUser.uid,
           });
+          this.router.navigate(["/"]);
           this.exerciseService.loadInExercises();
         } else {
+          this.router.navigate(["/login"]);
           this.authStateService.loginState.set({
             isLoggedIn: false,
             userID: null,

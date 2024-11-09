@@ -1,19 +1,22 @@
-import { Injectable } from "@angular/core";
+import { Injectable, signal } from "@angular/core";
 import { NavigationEnd, Router } from "@angular/router";
-import { filter } from "rxjs";
+import { filter, Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root",
 })
 export class NavigationService {
-  private currentPath = "";
-
+  private currentPath = signal("");
+  navigationEnd$: Observable<NavigationEnd>;
   constructor(private router: Router) {
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe((event: NavigationEnd) => {
-        this.currentPath = event.urlAfterRedirects;
-      });
+    this.navigationEnd$ = this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+    );
+
+    this.navigationEnd$.subscribe((event: NavigationEnd) => {
+      console.log(event.urlAfterRedirects);
+      this.currentPath.set(event.urlAfterRedirects);
+    });
   }
 
   getCurrentPath() {
