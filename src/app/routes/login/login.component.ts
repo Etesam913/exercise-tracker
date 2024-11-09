@@ -13,7 +13,7 @@ import { lucideLogIn } from "@ng-icons/lucide";
 })
 export class LoginComponent {
   private firebaseAuthActionsService = inject(FirebaseAuthActionsService);
-  loginClick() {
-    this.firebaseAuthActionsService.loginUsingGoogle();
+  async loginClick() {
+    await this.firebaseAuthActionsService.loginUsingGoogle();
   }
 }

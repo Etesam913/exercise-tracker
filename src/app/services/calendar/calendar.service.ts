@@ -8,8 +8,6 @@ import {
   where,
   writeBatch,
   arrayRemove,
-  updateDoc,
-  FieldValue,
   deleteField,
 } from "@angular/fire/firestore";
 import { Exercise } from "../exercise/exercise.service";
@@ -19,6 +17,7 @@ type CalendarData = {
   year: number;
   month: number;
   day: number;
+  firstDayOffset: number;
 };
 
 export type DayData = {
@@ -39,6 +38,11 @@ export class CalendarService {
     year: new Date().getFullYear(),
     month: new Date().getMonth(),
     day: new Date().getDate(),
+    firstDayOffset: new Date(
+      new Date().getFullYear(),
+      new Date().getMonth(),
+      1,
+    ).getDay(),
   });
   dayDataMap = signal<Map<string, Record<string, Exercise>>>(new Map());
   private firebaseAuthStateService = inject(FirebaseAuthStateService);
@@ -50,6 +54,11 @@ export class CalendarService {
       return collection(this.firestore, `users/${userID}/dayData`);
     }
     return null;
+  });
+  firstDayOffsetArr = computed(() => {
+    const { year, month } = this.calendarState();
+    const firstDayOffset = new Date(year, month, 1).getDay();
+    return Array.from({ length: firstDayOffset }, (_, i) => i);
   });
 
   monthlyDayData = signal<DayDataSignalRecord>({});
@@ -66,6 +75,10 @@ export class CalendarService {
 
   getDay() {
     return this.calendarState().day;
+  }
+
+  getFirstDayOffset() {
+    return this.calendarState().firstDayOffset;
   }
 
   getMonthFullName() {
@@ -98,7 +111,8 @@ export class CalendarService {
     } else {
       month += 1;
     }
-    this.calendarState.set({ year, month, day: 1 });
+    const firstDayOffset = new Date(year, month, 1).getDay();
+    this.calendarState.set({ year, month, day: 1, firstDayOffset });
   }
 
   previousMonth() {
@@ -109,7 +123,8 @@ export class CalendarService {
     } else {
       month -= 1;
     }
-    this.calendarState.set({ year, month, day: 1 });
+    const firstDayOffset = new Date(year, month, 1).getDay();
+    this.calendarState.set({ year, month, day: 1, firstDayOffset });
   }
 
   setDay(day: number) {
@@ -120,7 +135,12 @@ export class CalendarService {
         `Invalid day: ${day}. It should be between 1 and ${numberOfDaysInMonth}.`,
       );
     }
-    this.calendarState.set({ year, month, day });
+    this.calendarState.set({
+      year,
+      month,
+      day,
+      firstDayOffset: this.getFirstDayOffset(),
+    });
   }
 
   async getDayDataDocumentsForExerciseId(exerciseId: string) {
