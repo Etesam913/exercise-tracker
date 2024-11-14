@@ -1,27 +1,24 @@
-# ExerciseTracker
+<h1 align="center"> Personal Exercise Tracker </h1>
+<p align="center">https://exercise-tracker-dfc75.web.app</p>
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.9.
+<img align="center" src="https://etesam.nyc3.cdn.digitaloceanspaces.com/exercise-tracker/exercise-tracker-image.png"/>
 
-## Development server
+## 🔗 Link to the deployed app 
+* https://exercise-tracker-dfc75.web.app
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## 💪 Motivations
+* I wanted a simple lightweight tool to track the exercises that I do at the gym.
+* I wanted to learn modern Angular.
+* I wanted to learn how to use Firestore & Firebase.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## 🧑‍💻 Local Development
+* You will have to have the Angular CLI installed to run the project locally (https://angular.dev/tools/cli/setup-local).
+* You can install the dependencies by running `npm install`.
+* You can start the development server by running `npm start`.
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 🤖 Technologies
+* Angular 18
+* Firebase/Firestore
+* Tailwind CSS
+* Spartan UI
