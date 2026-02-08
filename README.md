@@ -1,7 +1,7 @@
 <h1 align="center"> Personal Exercise Tracker </h1>
 <p align="center">https://exercise-tracker-dfc75.web.app</p>
 
-<img align="center" src="https://storage.googleapis.com/etesam-public/personal-website/euismod/exercise-tracker/exercise-tracker-image.png"/>
+<img align="center" src="https://storage.googleapis.com/etesam-public/exercise-tracker/exercise-tracker-image.png"/>
 
 ## 🔗 Link to the deployed app 
 * https://exercise-tracker-dfc75.web.app
